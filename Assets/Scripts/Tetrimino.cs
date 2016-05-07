@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Tetromino : MonoBehaviour
+public class Tetrimino : MonoBehaviour
 {
 
 	/// <summary>
