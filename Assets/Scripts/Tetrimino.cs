@@ -1,17 +1,16 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 public class Tetrimino : MonoBehaviour
 {
-
 	/// <summary>
 	/// テトリミノの形状
 	/// 参考：http://livedoor.4.blogimg.jp/mkomiz/imgs/f/f/ff82b30d.gif
 	/// </summary>
 	public enum Shapes
 	{
-		None = 0,
-		I,
+		I = 0,
 		O,
 		T,
 		J,
@@ -32,14 +31,14 @@ public class Tetrimino : MonoBehaviour
 	[SerializeField]
 	private GameObject CubePrefab;
 
+	public static Shapes GetRandomShape ()
+	{
+		var shapeId = UnityEngine.Random.Range (0, Enum.GetValues (typeof(Tetrimino.Shapes)).Length);
+		return (Shapes)(shapeId);
+	}
 
 	void Awake ()
 	{
-		if (this.Shape == Shapes.None) {
-			Debug.LogError ("Missing Shape");
-			return;
-		}
-
 		//中心キューブ
 		var centerCubePrefab = GameManager.Instance.IsDebugMode ? this.CenterCubePrefab : this.CubePrefab;
 		this.AddCube (centerCubePrefab, Vector3.zero);
@@ -81,11 +80,6 @@ public class Tetrimino : MonoBehaviour
 			this.AddCube (this.CubePrefab, new Vector3 (1, 0, 0));
 			break;
 		}
-
-
-
-
-
 	}
 
 	void AddCube (GameObject prefab, Vector3 pos)
