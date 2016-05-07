@@ -35,12 +35,15 @@ public class Tetrimino : MonoBehaviour
 
 	void Awake ()
 	{
+		if(this.Shape == Shapes.None){
+			Debug.LogError("Missing Shape")
+			return;
+		}
 
-
-
-
-
-
+		var centerCube = Instantiate(this.CenterCubePrefab) as GameObject;
+		centerCube.transform.parent = this.transform;
+		centerCube.transform.localPosition = new Vector3(0,0,0) ;
+		centerCube.transform.localRotation = Quaternion.identity;
 
 	}
 
