@@ -20,7 +20,7 @@ public class TetriminoGenerator : MonoBehaviour
 	[SerializeField]
 	private GameObject PrefabZ;
 
-	public void Generate ()
+	public Tetrimino Generate ()
 	{
 		var randomShape = Tetrimino.GetRandomShape ();
 
@@ -59,6 +59,10 @@ public class TetriminoGenerator : MonoBehaviour
 		mino.transform.localRotation = Quaternion.identity;
 
 		mino.AddComponent<Rigidbody> ();
+		mino.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+
+
+		return mino.GetComponent<Tetrimino> ();
 	}
 
 

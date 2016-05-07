@@ -8,6 +8,20 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 	[SerializeField]
 	private TetriminoGenerator Generator;
 
+	[SerializeField]
+	private float Interval = 1.0f;
+
+	/// <summary>
+	/// ミノが最後に動いた時間
+	/// </summary>
+	private float LastUpdated;
+
+
+	/// <summary>
+	/// 今動かしているミノ
+	/// </summary>
+	private Tetrimino CurrentMino{ get; set; }
+
 	public void Awake ()
 	{
 		if (this != Instance) {
@@ -18,10 +32,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 		DontDestroyOnLoad (this.gameObject);
 	}
 
+	public void Update ()
+	{
+
+		if (this.LastUpdated + this.Interval < Time.time) {
+			this.CreateMino ();
+			
+		}
+
+
+		
+	}
+
 
 	public void CreateMino ()
 	{
-		this.Generator.Generate ();
+		this.CurrentMino = this.Generator.Generate ();
+		this.LastUpdated = Time.time;
 	}
 
 }
