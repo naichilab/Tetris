@@ -9,6 +9,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 	private TetriminoGenerator Generator;
 
 	[SerializeField]
+	private TetrisLogic Logic;
+
+	[SerializeField]
 	private float Interval = 1.0f;
 
 	/// <summary>
@@ -34,16 +37,19 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
 	public void Update ()
 	{
-
 		if (this.LastUpdated + this.Interval < Time.time) {
-			this.CreateMino ();
-			
+			this.Step ();
 		}
-
-
-		
 	}
 
+	private void Step ()
+	{
+		if (CurrentMino == null) {
+			this.CreateMino ();
+		} else {
+			
+		}
+	}
 
 	public void CreateMino ()
 	{

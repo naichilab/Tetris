@@ -57,10 +57,10 @@ public class TetriminoGenerator : MonoBehaviour
 		mino.transform.parent = this.transform;
 		mino.transform.localPosition = Vector3.zero;
 		mino.transform.localRotation = Quaternion.identity;
-
-		mino.AddComponent<Rigidbody> ();
-		mino.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
-
+//
+//		mino.AddComponent<Rigidbody> ();
+//		mino.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+//
 
 		return mino.GetComponent<Tetrimino> ();
 	}

@@ -100,6 +100,13 @@ public class Tetrimino : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-	
+		var p = this.transform.position;
+		if (Input.GetKey (KeyCode.LeftArrow)) {
+			transform.position = new Vector3 (p.x - 1, p.y, p.z);
+		} else if (Input.GetKey (KeyCode.RightArrow)) {
+			transform.position = new Vector3 (p.x + 1, p.y, p.z);
+		} else if (Input.GetKey (KeyCode.DownArrow)) {
+			transform.position = new Vector3 (p.x, p.y - 1, p.z);
+		}	
 	}
 }
