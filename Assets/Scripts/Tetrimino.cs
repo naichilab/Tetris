@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Tetrimino : MonoBehaviour
 {
@@ -31,6 +32,13 @@ public class Tetrimino : MonoBehaviour
 	[SerializeField]
 	private GameObject CubePrefab;
 
+
+
+	private List<TetriminoCube> Cubes = new List<TetriminoCube> ();
+
+	public Vector2 AbsoluteCenterLocation = new Vector2 (0, 0);
+
+
 	public static Shapes GetRandomShape ()
 	{
 		var shapeId = UnityEngine.Random.Range (0, Enum.GetValues (typeof(Tetrimino.Shapes)).Length);
@@ -41,53 +49,82 @@ public class Tetrimino : MonoBehaviour
 	{
 		//中心キューブ
 		var centerCubePrefab = GameManager.Instance.IsDebugMode ? this.CenterCubePrefab : this.CubePrefab;
-		this.AddCube (centerCubePrefab, Vector3.zero);
+		this.AddCube (centerCubePrefab, new Vector2 (0, 0));
 
 		switch (this.Shape) {
 		case Shapes.I:
-			this.AddCube (this.CubePrefab, new Vector3 (-1, 0, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (1, 0, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (2, 0, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (2, 0));
 			break;
 		case Shapes.O:
-			this.AddCube (this.CubePrefab, new Vector3 (1, 0, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (0, 1, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (1, 1, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (0, 1));
+			this.AddCube (this.CubePrefab, new Vector2 (1, 1));
 			break;
 		case Shapes.T:
-			this.AddCube (this.CubePrefab, new Vector3 (0, 1, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (-1, 0, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (1, 0, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (0, 1));
+			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
 			break;
 		case Shapes.J:
-			this.AddCube (this.CubePrefab, new Vector3 (-1, 1, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (-1, 0, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (1, 0, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (-1, 1));
+			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
 			break;
 		case Shapes.L:
-			this.AddCube (this.CubePrefab, new Vector3 (1, 1, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (-1, 0, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (1, 0, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (1, 1));
+			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
 			break;
 		case Shapes.S:
-			this.AddCube (this.CubePrefab, new Vector3 (-1, 0, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (0, 1, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (1, 1, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (0, 1));
+			this.AddCube (this.CubePrefab, new Vector2 (1, 1));
 			break;
 		case Shapes.Z:
-			this.AddCube (this.CubePrefab, new Vector3 (-1, 1, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (0, 1, 0));
-			this.AddCube (this.CubePrefab, new Vector3 (1, 0, 0));
+			this.AddCube (this.CubePrefab, new Vector2 (-1, 1));
+			this.AddCube (this.CubePrefab, new Vector2 (0, 1));
+			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
 			break;
 		}
 	}
 
-	void AddCube (GameObject prefab, Vector3 pos)
+
+	/// <summary>
+	/// 立方体を１つ生成する
+	/// </summary>
+	/// <param name="prefab">立方体のプレハブ</param>
+	/// <param name="p">立方体を生成する場所(中心からの相対座標)</param>
+	void AddCube (GameObject prefab, Vector2 p)
 	{
 		var cube = Instantiate (prefab) as GameObject;
 		cube.transform.parent = this.transform;
-		cube.transform.localPosition = pos;
+		cube.transform.localPosition = p;
 		cube.transform.localRotation = Quaternion.identity;
+
+		var cubeComponent = cube.GetComponent<TetriminoCube> ();
+		cubeComponent.Point = p;
+
+		this.Cubes.Add (cubeComponent);
+	}
+
+
+	public IEnumerable<Vector2> GetPoints ()
+	{
+
+		foreach (var cube in this.Cubes) {
+			yield return cube.Point;
+		}
+
+	}
+
+
+	public void Move ()
+	{
+
+		this.Cubes.ForEach (c => c.Move ());
+
 	}
 
 
@@ -96,17 +133,5 @@ public class Tetrimino : MonoBehaviour
 	{
 	
 	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-		var p = this.transform.position;
-		if (Input.GetKey (KeyCode.LeftArrow)) {
-			transform.position = new Vector3 (p.x - 1, p.y, p.z);
-		} else if (Input.GetKey (KeyCode.RightArrow)) {
-			transform.position = new Vector3 (p.x + 1, p.y, p.z);
-		} else if (Input.GetKey (KeyCode.DownArrow)) {
-			transform.position = new Vector3 (p.x, p.y - 1, p.z);
-		}	
-	}
+
 }
