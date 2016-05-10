@@ -13,7 +13,7 @@ public class TetrisLogic : MonoBehaviour
 	public Tetrimino CurrentMino = null;
 
 	[SerializeField]
-	private Vector2 TetriminoGenerateCenterLocation = new Vector2 (4, 20);
+	private Point TetriminoGenerateCenterLocation = new Point (4, 20);
 
 	private TetriminoGenerator Generator;
 
@@ -50,13 +50,10 @@ public class TetrisLogic : MonoBehaviour
 		switch (dir) {
 		case Direction.Left:
 			return this.field.Placeable (this.CurrentMino, this.CurrentMino.AbsoluteCenterLocation.Offset (-1, 0));
-			break;
 		case Direction.Right:
 			return this.field.Placeable (this.CurrentMino, this.CurrentMino.AbsoluteCenterLocation.Offset (1, 0));
-			break;
 		case Direction.Bottom:
 			return this.field.Placeable (this.CurrentMino, this.CurrentMino.AbsoluteCenterLocation.Offset (0, -1));
-			break;
 		}
 
 		return false;
@@ -70,15 +67,15 @@ public class TetrisLogic : MonoBehaviour
 
 		switch (dir) {
 		case Direction.Left:
-			this.CurrentMino.AbsoluteCenterLocation.x = this.CurrentMino.AbsoluteCenterLocation.x - 1;
+			this.CurrentMino.AbsoluteCenterLocation.X = this.CurrentMino.AbsoluteCenterLocation.X - 1;
 			this.CurrentMino.Move ();
 			break;
 		case Direction.Right:
-			this.CurrentMino.AbsoluteCenterLocation.x = this.CurrentMino.AbsoluteCenterLocation.x + 1;
+			this.CurrentMino.AbsoluteCenterLocation.X = this.CurrentMino.AbsoluteCenterLocation.X + 1;
 			this.CurrentMino.Move ();
 			break;
 		case Direction.Bottom:
-			this.CurrentMino.AbsoluteCenterLocation.y = this.CurrentMino.AbsoluteCenterLocation.y - 1;
+			this.CurrentMino.AbsoluteCenterLocation.Y = this.CurrentMino.AbsoluteCenterLocation.Y - 1;
 			this.CurrentMino.Move ();
 			break;
 		}
@@ -88,7 +85,7 @@ public class TetrisLogic : MonoBehaviour
 
 	public void StepDown ()
 	{
-		this.CurrentMino.AbsoluteCenterLocation.y = this.CurrentMino.AbsoluteCenterLocation.y - 1;
+		this.CurrentMino.AbsoluteCenterLocation.Y = this.CurrentMino.AbsoluteCenterLocation.Y - 1;
 		this.CurrentMino.Move ();
 	}
 

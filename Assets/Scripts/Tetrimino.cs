@@ -37,7 +37,7 @@ public class Tetrimino : MonoBehaviour
 
 	private List<TetriminoCube> Cubes = new List<TetriminoCube> ();
 
-	public Vector2 AbsoluteCenterLocation = new Vector2 (0, 0);
+	public Point AbsoluteCenterLocation = Point.Zero;
 
 
 	public static Shapes GetRandomShape ()
@@ -50,43 +50,43 @@ public class Tetrimino : MonoBehaviour
 	{
 		//中心キューブ
 		var centerCubePrefab = GameManager.Instance.IsDebugMode ? this.CenterCubePrefab : this.CubePrefab;
-		this.AddCube (centerCubePrefab, new Vector2 (0, 0));
+		this.AddCube (centerCubePrefab, new Point (0, 0));
 
 		switch (this.Shape) {
 		case Shapes.I:
-			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
-			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
-			this.AddCube (this.CubePrefab, new Vector2 (2, 0));
+			this.AddCube (this.CubePrefab, new Point (-1, 0));
+			this.AddCube (this.CubePrefab, new Point (1, 0));
+			this.AddCube (this.CubePrefab, new Point (2, 0));
 			break;
 		case Shapes.O:
-			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
-			this.AddCube (this.CubePrefab, new Vector2 (0, 1));
-			this.AddCube (this.CubePrefab, new Vector2 (1, 1));
+			this.AddCube (this.CubePrefab, new Point (1, 0));
+			this.AddCube (this.CubePrefab, new Point (0, 1));
+			this.AddCube (this.CubePrefab, new Point (1, 1));
 			break;
 		case Shapes.T:
-			this.AddCube (this.CubePrefab, new Vector2 (0, 1));
-			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
-			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
+			this.AddCube (this.CubePrefab, new Point (0, 1));
+			this.AddCube (this.CubePrefab, new Point (-1, 0));
+			this.AddCube (this.CubePrefab, new Point (1, 0));
 			break;
 		case Shapes.J:
-			this.AddCube (this.CubePrefab, new Vector2 (-1, 1));
-			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
-			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
+			this.AddCube (this.CubePrefab, new Point (-1, 1));
+			this.AddCube (this.CubePrefab, new Point (-1, 0));
+			this.AddCube (this.CubePrefab, new Point (1, 0));
 			break;
 		case Shapes.L:
-			this.AddCube (this.CubePrefab, new Vector2 (1, 1));
-			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
-			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
+			this.AddCube (this.CubePrefab, new Point (1, 1));
+			this.AddCube (this.CubePrefab, new Point (-1, 0));
+			this.AddCube (this.CubePrefab, new Point (1, 0));
 			break;
 		case Shapes.S:
-			this.AddCube (this.CubePrefab, new Vector2 (-1, 0));
-			this.AddCube (this.CubePrefab, new Vector2 (0, 1));
-			this.AddCube (this.CubePrefab, new Vector2 (1, 1));
+			this.AddCube (this.CubePrefab, new Point (-1, 0));
+			this.AddCube (this.CubePrefab, new Point (0, 1));
+			this.AddCube (this.CubePrefab, new Point (1, 1));
 			break;
 		case Shapes.Z:
-			this.AddCube (this.CubePrefab, new Vector2 (-1, 1));
-			this.AddCube (this.CubePrefab, new Vector2 (0, 1));
-			this.AddCube (this.CubePrefab, new Vector2 (1, 0));
+			this.AddCube (this.CubePrefab, new Point (-1, 1));
+			this.AddCube (this.CubePrefab, new Point (0, 1));
+			this.AddCube (this.CubePrefab, new Point (1, 0));
 			break;
 		}
 	}
@@ -97,11 +97,11 @@ public class Tetrimino : MonoBehaviour
 	/// </summary>
 	/// <param name="prefab">立方体のプレハブ</param>
 	/// <param name="p">立方体を生成する場所(中心からの相対座標)</param>
-	void AddCube (GameObject prefab, Vector2 p)
+	void AddCube (GameObject prefab, Point p)
 	{
 		var cube = Instantiate (prefab) as GameObject;
 		cube.transform.parent = this.transform;
-		cube.transform.localPosition = p;
+		cube.transform.localPosition = p.Vector2;
 		cube.transform.localRotation = Quaternion.identity;
 
 		var cubeComponent = cube.GetComponent<TetriminoCube> ();
@@ -111,18 +111,14 @@ public class Tetrimino : MonoBehaviour
 	}
 
 
-	public IEnumerable<Vector2> GetPoints ()
+	public IEnumerable<Point> GetPoints ()
 	{
 		return this.Cubes.Select (c => c.Point);
 	}
 
-	public IEnumerable<Vector2> GetAbsolutePoints ()
+	public IEnumerable<Point> GetAbsolutePoints ()
 	{
-		return this.Cubes.Select (c => {
-			int x = (int)(c.Point.x + this.AbsoluteCenterLocation.x);
-			int y = (int)(c.Point.y + this.AbsoluteCenterLocation.y);
-			return new Vector2 (x, y);
-		});
+		return this.Cubes.Select (c => c.Point + this.AbsoluteCenterLocation);
 	}
 
 

@@ -3,7 +3,7 @@ using System.Collections;
 
 public class TetriminoCube : MonoBehaviour
 {
-	public Vector2 Point;
+	public Point Point;
 
 	private Tetrimino Parent;
 
@@ -17,7 +17,7 @@ public class TetriminoCube : MonoBehaviour
 			this.Parent = GetComponentInParent<Tetrimino> ();
 		}
 
-		this.transform.position = this.Parent.AbsoluteCenterLocation + this.Point;
+		this.transform.position = (this.Parent.AbsoluteCenterLocation + this.Point).Vector2;
 	}
 
 }

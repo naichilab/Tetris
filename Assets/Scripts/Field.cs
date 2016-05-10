@@ -31,14 +31,9 @@ public class Field
 	}
 
 
-	public bool Placeable (Tetrimino mino, Vector2 pos)
+	public bool Placeable (Tetrimino mino, Point pos)
 	{
-		
-		
-		
-		
 		return true;
-		
 	}
 
 }
