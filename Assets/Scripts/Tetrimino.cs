@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class Tetrimino : MonoBehaviour
 {
@@ -112,26 +113,28 @@ public class Tetrimino : MonoBehaviour
 
 	public IEnumerable<Vector2> GetPoints ()
 	{
-
-		foreach (var cube in this.Cubes) {
-			yield return cube.Point;
-		}
-
+		return this.Cubes.Select (c => c.Point);
 	}
+
+	public IEnumerable<Vector2> GetAbsolutePoints ()
+	{
+		return this.Cubes.Select (c => {
+			int x = (int)(c.Point.x + this.AbsoluteCenterLocation.x);
+			int y = (int)(c.Point.y + this.AbsoluteCenterLocation.y);
+			return new Vector2 (x, y);
+		});
+	}
+
+
+
+
 
 
 	public void Move ()
 	{
-
 		this.Cubes.ForEach (c => c.Move ());
-
 	}
 
 
-	// Use this for initialization
-	void Start ()
-	{
-	
-	}
 
 }
