@@ -20,10 +20,23 @@ public struct Point
 
 
 
-	public Point Offset (int x = 0, int y = 0)
+	public void Move (int x = 0, int y = 0)
 	{
-		return this + new Point (x, y);
+		this.X += x;
+		this.Y += y;
 	}
+
+
+	public void RotateClockwise (Point center)
+	{
+		//todo 
+	}
+
+	public void RotateCounterClockwise (Point center)
+	{
+		//todo 
+	}
+
 
 
 

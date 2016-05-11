@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-public class Tetrimino : MonoBehaviour
+public class Tetrimino : MonoBehaviour,ITetrimino
 {
 	/// <summary>
 	/// テトリミノの形状
@@ -37,7 +37,7 @@ public class Tetrimino : MonoBehaviour
 
 	private List<TetriminoCube> Cubes = new List<TetriminoCube> ();
 
-	public Point AbsoluteCenterLocation = Point.Zero;
+	private Point AbsoluteCenterPoint = Point.Zero;
 
 
 	public static Shapes GetRandomShape ()
@@ -105,10 +105,16 @@ public class Tetrimino : MonoBehaviour
 		cube.transform.localRotation = Quaternion.identity;
 
 		var cubeComponent = cube.GetComponent<TetriminoCube> ();
+		cubeComponent.SetParentTetrimino (this);
 		cubeComponent.Point = p;
 
 		this.Cubes.Add (cubeComponent);
 	}
+
+
+
+
+
 
 
 	public IEnumerable<Point> GetPoints ()
@@ -116,21 +122,59 @@ public class Tetrimino : MonoBehaviour
 		return this.Cubes.Select (c => c.Point);
 	}
 
+
+	public void SetAbsoluteCenterPoint (Point p)
+	{
+		this.AbsoluteCenterPoint = p;
+	}
+
+	/// <summary>
+	/// テトリミノの中心となるCubeの絶対座標
+	/// </summary>
+	public Point GetAbsoluteCenterPoint ()
+	{
+		return this.AbsoluteCenterPoint;
+	}
+
+	/// <summary>
+	/// テトリミノを構成するCubeそれぞれの中心からの座標リスト
+	/// </summary>
+	public IEnumerable<Point> GetRelationalPoints ()
+	{
+		return this.Cubes.Select (c => c.Point);
+	}
+
+	/// <summary>
+	/// テトリミノを構成するCubeそれぞれの絶対座標
+	/// </summary>
 	public IEnumerable<Point> GetAbsolutePoints ()
 	{
-		return this.Cubes.Select (c => c.Point + this.AbsoluteCenterLocation);
+		return this.Cubes.Select (c => this.AbsoluteCenterPoint + c.Point);
 	}
 
-
-
-
-
-
-	public void Move ()
+	/// <summary>
+	/// 平行移動する
+	/// </summary>
+	public void Move (int x, int y)
 	{
-		this.Cubes.ForEach (c => c.Move ());
+		this.Cubes.ForEach (c => c.Move (x, y));
 	}
 
+	/// <summary>
+	/// 右回転
+	/// </summary>
+	public void RotateClockwise ()
+	{
+		this.Cubes.ForEach (c => c.RotateClockwise ());
+	}
+
+	/// <summary>
+	/// 左回転
+	/// </summary>
+	public void RotateCounterClockwise ()
+	{
+		this.Cubes.ForEach (c => c.RotateCounterClockwise ());
+	}
 
 
 }

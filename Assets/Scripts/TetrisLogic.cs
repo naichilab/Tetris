@@ -49,11 +49,11 @@ public class TetrisLogic : MonoBehaviour
 		
 		switch (dir) {
 		case Direction.Left:
-			return this.field.Placeable (this.CurrentMino, this.CurrentMino.AbsoluteCenterLocation.Offset (-1, 0));
+			return this.field.Placeable (this.CurrentMino, this.CurrentMino.GetAbsoluteCenterPoint () + new Point (-1, 0));
 		case Direction.Right:
-			return this.field.Placeable (this.CurrentMino, this.CurrentMino.AbsoluteCenterLocation.Offset (1, 0));
+			return this.field.Placeable (this.CurrentMino, this.CurrentMino.GetAbsoluteCenterPoint () + new Point (1, 0));
 		case Direction.Bottom:
-			return this.field.Placeable (this.CurrentMino, this.CurrentMino.AbsoluteCenterLocation.Offset (0, -1));
+			return this.field.Placeable (this.CurrentMino, this.CurrentMino.GetAbsoluteCenterPoint () + new Point (0, -1));
 		}
 
 		return false;
@@ -67,16 +67,13 @@ public class TetrisLogic : MonoBehaviour
 
 		switch (dir) {
 		case Direction.Left:
-			this.CurrentMino.AbsoluteCenterLocation.X = this.CurrentMino.AbsoluteCenterLocation.X - 1;
-			this.CurrentMino.Move ();
+			this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (-1, 0));
 			break;
 		case Direction.Right:
-			this.CurrentMino.AbsoluteCenterLocation.X = this.CurrentMino.AbsoluteCenterLocation.X + 1;
-			this.CurrentMino.Move ();
+			this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (1, 0));
 			break;
 		case Direction.Bottom:
-			this.CurrentMino.AbsoluteCenterLocation.Y = this.CurrentMino.AbsoluteCenterLocation.Y - 1;
-			this.CurrentMino.Move ();
+			this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (0, -1));
 			break;
 		}
 
@@ -85,8 +82,7 @@ public class TetrisLogic : MonoBehaviour
 
 	public void StepDown ()
 	{
-		this.CurrentMino.AbsoluteCenterLocation.Y = this.CurrentMino.AbsoluteCenterLocation.Y - 1;
-		this.CurrentMino.Move ();
+		this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (0, -1));
 	}
 
 	public void CreateMino ()
@@ -96,7 +92,7 @@ public class TetrisLogic : MonoBehaviour
 		}
 
 		this.CurrentMino = this.Generator.Generate (this.TetriminoGenerateCenterLocation);
-		this.CurrentMino.AbsoluteCenterLocation = this.TetriminoGenerateCenterLocation;
+		this.CurrentMino.SetAbsoluteCenterPoint (this.TetriminoGenerateCenterLocation);
 	}
 
 	// Use this for initialization
