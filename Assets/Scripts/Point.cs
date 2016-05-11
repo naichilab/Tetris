@@ -57,4 +57,9 @@ public struct Point
 	}
 
 
+	public override string ToString ()
+	{
+		return string.Format ("[Point: X={0}, Y={1}]", this.X, this.Y);
+	}
+
 }

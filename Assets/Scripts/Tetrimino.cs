@@ -4,6 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class Tetrimino : MonoBehaviour,ITetrimino
 {
 	/// <summary>
@@ -91,7 +95,6 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 		}
 	}
 
-
 	/// <summary>
 	/// 立方体を１つ生成する
 	/// </summary>
@@ -126,6 +129,8 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 	public void SetAbsoluteCenterPoint (Point p)
 	{
 		this.AbsoluteCenterPoint = p;
+		this.transform.position = this.AbsoluteCenterPoint.Vector2;
+		this.Cubes.ForEach (c => c.SetAbsoluteCenterPoint (p + c.Point));
 	}
 
 	/// <summary>
@@ -157,6 +162,7 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 	/// </summary>
 	public void Move (int x, int y)
 	{
+		this.AbsoluteCenterPoint.Move (x, y);
 		this.Cubes.ForEach (c => c.Move (x, y));
 	}
 
@@ -177,4 +183,25 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 	}
 
 
+
+	#if UNITY_EDITOR
+	[CustomEditor (typeof(Tetrimino))]
+	public class TetriminoEditor : Editor           //!< Editorを継承するよ！
+	{
+		bool folding = false;
+
+		public override void OnInspectorGUI ()
+		{
+			base.OnInspectorGUI ();
+			Tetrimino tetrimino = target as Tetrimino;
+
+			EditorGUILayout.LabelField ("表示座標");
+			using (new EditorIndent ()) {
+				foreach (var c in tetrimino.GetAbsolutePoints()) {
+					EditorGUILayout.LabelField (c.ToString ());
+				}
+			}
+		}
+	}
+	#endif
 }

@@ -37,7 +37,7 @@ public class TetriminoCube : MonoBehaviour,ITetrimino
 
 	void Update ()
 	{
-		this.transform.position = (this.AbsoluteCenterPoint + this.Point).Vector2;
+//		this.transform.position = this.AbsoluteCenterPoint.Vector2;
 	}
 
 	/// <summary>
@@ -46,6 +46,7 @@ public class TetriminoCube : MonoBehaviour,ITetrimino
 	public void SetAbsoluteCenterPoint (Point p)
 	{
 		this.AbsoluteCenterPoint = p;
+		this.transform.position = this.AbsoluteCenterPoint.Vector2;
 	}
 
 	/// <summary>

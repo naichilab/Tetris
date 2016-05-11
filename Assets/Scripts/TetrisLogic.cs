@@ -91,8 +91,12 @@ public class TetrisLogic : MonoBehaviour
 			Debug.LogError ("Current Tetrimino is exists");
 		}
 
+		Debug.Log ("TetriminoGenerateCenterLocation = " + this.TetriminoGenerateCenterLocation.ToString ());
+
 		this.CurrentMino = this.Generator.Generate (this.TetriminoGenerateCenterLocation);
-		this.CurrentMino.SetAbsoluteCenterPoint (this.TetriminoGenerateCenterLocation);
+
+		Debug.Log ("CurrentMino = " + this.CurrentMino.GetAbsoluteCenterPoint ().ToString ());
+
 	}
 
 	// Use this for initialization

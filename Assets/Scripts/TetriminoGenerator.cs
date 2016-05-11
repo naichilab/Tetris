@@ -61,12 +61,10 @@ public class TetriminoGenerator : MonoBehaviour
 		mino.transform.position = pos.Vector2;
 		mino.transform.rotation = Quaternion.identity;
 
-//
-//		mino.AddComponent<Rigidbody> ();
-//		mino.GetComponent<Rigidbody> ().constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
-//
+		var tetrimino = mino.GetComponent<Tetrimino> ();
+		tetrimino.SetAbsoluteCenterPoint (pos);
 
-		return mino.GetComponent<Tetrimino> ();
+		return tetrimino;
 	}
 
 
