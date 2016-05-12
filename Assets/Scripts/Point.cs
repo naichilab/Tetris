@@ -12,13 +12,13 @@ public struct Point
 		}
 	}
 
+	public bool IsZero{ get { return X == 0 && Y == 0; } }
+
 	public Point (int x, int y)
 	{
 		this.X = x;
 		this.Y = y;
 	}
-
-
 
 	public void Move (int x = 0, int y = 0)
 	{
@@ -26,6 +26,10 @@ public struct Point
 		this.Y += y;
 	}
 
+	public void Move (Point offset)
+	{
+		this.Move (offset.X, offset.Y);
+	}
 
 	public void RotateClockwise (Point center)
 	{

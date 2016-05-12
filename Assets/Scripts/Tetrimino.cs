@@ -158,38 +158,49 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 	}
 
 	/// <summary>
-	/// 平行移動する
+	/// 移動後の座標を取得する
 	/// </summary>
-	public void Move (int x, int y)
+	public IEnumerable<Point> GetMovedAbsolutePoints (MoveAmount moveAmount)
 	{
-		this.AbsoluteCenterPoint.Move (x, y);
-		this.Cubes.ForEach (c => c.Move (x, y));
+		return this.GetAbsolutePoints ().Select (p => {
+			p.Move (moveAmount.Offset.X, moveAmount.Offset.Y);
+			if (moveAmount.Rotate == MoveAmount.RotateDir.Clockwise) {
+				p.RotateClockwise (this.AbsoluteCenterPoint);
+			}
+			if (moveAmount.Rotate == MoveAmount.RotateDir.CounterClockwise) {
+				p.RotateCounterClockwise (this.AbsoluteCenterPoint);
+			}
+			return p;
+		});
 	}
 
 	/// <summary>
-	/// 右回転
+	/// 移動する
 	/// </summary>
-	public void RotateClockwise ()
+	/// <param name="moveAmount">移動量</param>
+	public void Move (MoveAmount moveAmount)
 	{
-		this.Cubes.ForEach (c => c.RotateClockwise ());
-	}
+		//平行移動
+		if (!moveAmount.Offset.IsZero) {
+			var offset = moveAmount.Offset;
+			this.AbsoluteCenterPoint.Move (offset.X, offset.Y);
+			this.Cubes.ForEach (c => c.Move (moveAmount));
+		}
 
-	/// <summary>
-	/// 左回転
-	/// </summary>
-	public void RotateCounterClockwise ()
-	{
-		this.Cubes.ForEach (c => c.RotateCounterClockwise ());
+		//回転
+//		if (moveAmount.Rotate == MoveAmount.RotateDir.Clockwise) {
+//			this.Cubes.ForEach (c => c.RotateClockwise ());
+//		}
+//		if (moveAmount.Rotate == MoveAmount.RotateDir.CounterClockwise) {
+//			this.Cubes.ForEach (c => c.RotateCounterClockwise ());
+//		}
 	}
-
 
 
 	#if UNITY_EDITOR
 	[CustomEditor (typeof(Tetrimino))]
-	public class TetriminoEditor : Editor           //!< Editorを継承するよ！
+	public class TetriminoEditor : Editor
 	{
-		bool folding = false;
-
 		public override void OnInspectorGUI ()
 		{
 			base.OnInspectorGUI ();
@@ -201,6 +212,15 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 					EditorGUILayout.LabelField (c.ToString ());
 				}
 			}
+
+			EditorGUILayout.LabelField ("左移動座標");
+			using (new EditorIndent ()) {
+				foreach (var c in tetrimino.GetMovedAbsolutePoints(new MoveAmount(-1,0))) {
+					EditorGUILayout.LabelField (c.ToString ());
+				}
+			}
+
+
 		}
 	}
 	#endif

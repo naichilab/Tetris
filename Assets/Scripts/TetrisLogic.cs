@@ -49,11 +49,11 @@ public class TetrisLogic : MonoBehaviour
 		
 		switch (dir) {
 		case Direction.Left:
-			return this.field.Placeable (this.CurrentMino, this.CurrentMino.GetAbsoluteCenterPoint () + new Point (-1, 0));
+			return this.field.Placeable (this.CurrentMino, new MoveAmount (-1, 0));
 		case Direction.Right:
-			return this.field.Placeable (this.CurrentMino, this.CurrentMino.GetAbsoluteCenterPoint () + new Point (1, 0));
+			return this.field.Placeable (this.CurrentMino, new MoveAmount (1, 0));
 		case Direction.Bottom:
-			return this.field.Placeable (this.CurrentMino, this.CurrentMino.GetAbsoluteCenterPoint () + new Point (0, -1));
+			return this.field.Placeable (this.CurrentMino, new MoveAmount (0, -1));
 		}
 
 		return false;

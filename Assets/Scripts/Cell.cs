@@ -56,4 +56,8 @@ public class Cell
 	/// </summary>
 	public bool IsCeil{ get { return this.Contents == Content.Ceil; } }
 
+	/// <summary>
+	/// 空かどうか
+	/// </summary>
+	public bool IsEmpty{ get { return this.Contents == Content.Empty; } }
 }

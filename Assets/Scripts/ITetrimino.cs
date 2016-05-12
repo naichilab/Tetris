@@ -25,18 +25,14 @@ public interface ITetrimino
 	IEnumerable<Point> GetAbsolutePoints ();
 
 	/// <summary>
-	/// 平行移動する
+	/// 移動後の座標を取得する
 	/// </summary>
-	void Move (int x, int y);
+	IEnumerable<Point> GetMovedAbsolutePoints (MoveAmount moveAmount);
 
 	/// <summary>
-	/// 右回転
+	/// 移動する
 	/// </summary>
-	void RotateClockwise ();
+	void Move (MoveAmount moveAmount);
 
-	/// <summary>
-	/// 左回転
-	/// </summary>
-	void RotateCounterClockwise ();
 
 }

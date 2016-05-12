@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
 public class Field
 {
@@ -33,9 +35,11 @@ public class Field
 		}
 	}
 
-	public bool Placeable (Tetrimino mino, Point pos)
-	{
-		return true;
+	public bool Placeable (ITetrimino mino, MoveAmount moveAmount)
+	{	
+		var movedAbsolutePoints = mino.GetMovedAbsolutePoints (moveAmount);
+
+		return movedAbsolutePoints.All (p => this.field [p.X, p.Y].IsEmpty);
 	}
 
 }

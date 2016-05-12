@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+
 public class TetriminoCube : MonoBehaviour,ITetrimino
 {
 	/// <summary>
@@ -74,27 +79,40 @@ public class TetriminoCube : MonoBehaviour,ITetrimino
 	}
 
 	/// <summary>
-	/// 平行移動する
+	/// 移動後の座標を取得する
 	/// </summary>
-	public void Move (int x, int y)
+	public IEnumerable<Point> GetMovedAbsolutePoints (MoveAmount moveAmount)
 	{
-		this.Point.Move (x, y);
+		yield return this.AbsoluteCenterPoint + moveAmount.Offset;
 	}
+
 
 	/// <summary>
-	/// 右回転
+	/// 移動する
 	/// </summary>
-	public void RotateClockwise ()
+	/// <param name="moveAmount">移動量</param>
+	public void Move (MoveAmount moveAmount)
 	{
-		// Nothing to do.
+		//平行移動
+		if (!moveAmount.Offset.IsZero) {
+			var offset = moveAmount.Offset;
+			this.Point.Move (offset.X, offset.Y);
+		}
+
+		//回転は不要
 	}
 
-	/// <summary>
-	/// 左回転
-	/// </summary>
-	public void RotateCounterClockwise ()
-	{
-		// Nothing to do.
-	}
 
+	#if UNITY_EDITOR
+	[CustomEditor (typeof(TetriminoCube))]
+	public class TetriminoCubeEditor : Editor
+	{
+		public override void OnInspectorGUI ()
+		{
+			base.OnInspectorGUI ();
+			TetriminoCube tetriminoCube = target as TetriminoCube;
+			EditorGUILayout.LabelField ("表示座標", tetriminoCube.GetAbsolutePoints ().First ().ToString ());
+		}
+	}
+	#endif
 }
