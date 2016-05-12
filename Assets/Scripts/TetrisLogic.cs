@@ -17,22 +17,21 @@ public class TetrisLogic : MonoBehaviour
 
 	private TetriminoGenerator Generator;
 
-	private Field field;
+	private Field Field;
 
 	public void SetTetriminoGenerator (TetriminoGenerator gen)
 	{
 		this.Generator = gen;
 	}
 
+	public void SetField (Field f)
+	{
+		this.Field = f;
+		f.Reset ();
+	}
 
 	public bool HasCurrentMino {
 		get{ return this.CurrentMino != null; }
-	}
-
-	void Awake ()
-	{
-		this.field = new Field ();
-		this.field.Reset ();
 	}
 
 
@@ -49,11 +48,11 @@ public class TetrisLogic : MonoBehaviour
 		
 		switch (dir) {
 		case Direction.Left:
-			return this.field.Placeable (this.CurrentMino, new MoveAmount (-1, 0));
+			return this.Field.Placeable (this.CurrentMino, new MoveAmount (-1, 0));
 		case Direction.Right:
-			return this.field.Placeable (this.CurrentMino, new MoveAmount (1, 0));
+			return this.Field.Placeable (this.CurrentMino, new MoveAmount (1, 0));
 		case Direction.Bottom:
-			return this.field.Placeable (this.CurrentMino, new MoveAmount (0, -1));
+			return this.Field.Placeable (this.CurrentMino, new MoveAmount (0, -1));
 		}
 
 		return false;
@@ -77,12 +76,6 @@ public class TetrisLogic : MonoBehaviour
 			break;
 		}
 
-	}
-
-
-	public void StepDown ()
-	{
-		this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (0, -1));
 	}
 
 	public void CreateMino ()

@@ -9,6 +9,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 	private TetriminoGenerator Generator;
 
 	[SerializeField]
+	private Field Field;
+
+	[SerializeField]
 	private TetrisLogic Logic;
 
 	[SerializeField]
@@ -34,6 +37,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 	public void Start ()
 	{
 		this.Logic.SetTetriminoGenerator (this.Generator);
+		this.Logic.SetField (this.Field);
 		
 	}
 
@@ -61,7 +65,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 				this.Logic.CreateMino ();
 				this.LastUpdated = Time.time;
 			} else {
-				this.Logic.StepDown ();
+				if (this.Logic.CanMove (TetrisLogic.Direction.Bottom)) {
+					this.Logic.Move (TetrisLogic.Direction.Bottom);
+				}
 			}
 			this.LastUpdated = Time.time;
 		}
