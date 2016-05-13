@@ -22,10 +22,6 @@ public class Cell
 		/// </summary>
 		Wall,
 		/// <summary>
-		/// 天井
-		/// </summary>
-		Ceil,
-		/// <summary>
 		/// このEnumの要素数
 		/// </summary>
 		Count
@@ -45,16 +41,16 @@ public class Cell
 		this.Contents = c;
 	}
 
+	public void SetCube ()
+	{
+		this.Contents = Content.Cube;
+	}
+
 	/// <summary>
 	/// 壁かどうか
 	/// </summary>
 	public bool IsWall{ get { return this.Contents == Content.Wall; } }
 
-
-	/// <summary>
-	/// 天井かどうか
-	/// </summary>
-	public bool IsCeil{ get { return this.Contents == Content.Ceil; } }
 
 	/// <summary>
 	/// 空かどうか

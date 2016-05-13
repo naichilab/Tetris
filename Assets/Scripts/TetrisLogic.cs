@@ -12,9 +12,6 @@ public class TetrisLogic : MonoBehaviour
 
 	public Tetrimino CurrentMino = null;
 
-	[SerializeField]
-	private Point TetriminoGenerateCenterLocation = new Point (4, 20);
-
 	private TetriminoGenerator Generator;
 
 	private Field Field;
@@ -58,6 +55,12 @@ public class TetrisLogic : MonoBehaviour
 		return false;
 	}
 
+	public bool Placeable (MoveAmount moveAmount)
+	{
+		return this.Field.Placeable (this.CurrentMino, moveAmount);
+	}
+
+
 	public void Move (Direction dir)
 	{
 		if (this.CurrentMino == null) {
@@ -84,23 +87,17 @@ public class TetrisLogic : MonoBehaviour
 			Debug.LogError ("Current Tetrimino is exists");
 		}
 
-		Debug.Log ("TetriminoGenerateCenterLocation = " + this.TetriminoGenerateCenterLocation.ToString ());
-
-		this.CurrentMino = this.Generator.Generate (this.TetriminoGenerateCenterLocation);
-
-		Debug.Log ("CurrentMino = " + this.CurrentMino.GetAbsoluteCenterPoint ().ToString ());
-
+		this.CurrentMino = this.Generator.Generate ();
 	}
 
-	// Use this for initialization
-	void Start ()
+	public void FixMino ()
 	{
-	
+		if (this.CurrentMino == null) {
+			Debug.LogError ("Missing current tetrimino.");
+		}
+
+		this.Field.FixTetrimino (this.CurrentMino);
+		this.CurrentMino = null;
 	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
+
 }

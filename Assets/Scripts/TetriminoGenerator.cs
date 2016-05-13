@@ -20,7 +20,7 @@ public class TetriminoGenerator : MonoBehaviour
 	[SerializeField]
 	private GameObject PrefabZ;
 
-	public Tetrimino Generate (Point pos)
+	public Tetrimino Generate ()
 	{
 		var randomShape = Tetrimino.GetRandomShape ();
 
@@ -52,6 +52,8 @@ public class TetriminoGenerator : MonoBehaviour
 			Debug.LogError ("Shape Missing");
 			break;
 		}
+
+		var pos = new Point ((int)this.transform.localPosition.x, (int)this.transform.localPosition.y);
 
 		var mino = Instantiate (prefab);
 		mino.transform.parent = this.transform;

@@ -56,6 +56,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 		} else if (Input.GetKey (KeyCode.DownArrow)) {
 			if (this.Logic.CanMove (TetrisLogic.Direction.Bottom)) {
 				this.Logic.Move (TetrisLogic.Direction.Bottom);
+			} else {
+				this.Logic.FixMino ();
+				this.Logic.CreateMino ();
 			}
 		}	
 
@@ -63,10 +66,15 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 		if (this.LastUpdated + this.Interval < Time.time) {
 			if (!this.Logic.HasCurrentMino) {
 				this.Logic.CreateMino ();
-				this.LastUpdated = Time.time;
+				if (!this.Logic.Placeable (MoveAmount.Zero)) {
+					throw new System.NotImplementedException ("GameOver");
+				}
 			} else {
 				if (this.Logic.CanMove (TetrisLogic.Direction.Bottom)) {
 					this.Logic.Move (TetrisLogic.Direction.Bottom);
+				} else {
+					this.Logic.FixMino ();
+					this.Logic.CreateMino ();
 				}
 			}
 			this.LastUpdated = Time.time;

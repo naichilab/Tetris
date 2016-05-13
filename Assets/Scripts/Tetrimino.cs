@@ -50,6 +50,11 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 		return (Shapes)(shapeId);
 	}
 
+	public IEnumerable<TetriminoCube> GetCubes ()
+	{
+		return this.Cubes.AsEnumerable ();	
+	}
+
 	void Awake ()
 	{
 		//中心キューブ
@@ -207,18 +212,18 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 			Tetrimino tetrimino = target as Tetrimino;
 
 			EditorGUILayout.LabelField ("表示座標");
-			using (new EditorIndent ()) {
-				foreach (var c in tetrimino.GetAbsolutePoints()) {
-					EditorGUILayout.LabelField (c.ToString ());
-				}
+			EditorGUI.indentLevel++;
+			foreach (var c in tetrimino.GetAbsolutePoints()) {
+				EditorGUILayout.LabelField (c.ToString ());
 			}
+			EditorGUI.indentLevel--;
 
 			EditorGUILayout.LabelField ("左移動座標");
-			using (new EditorIndent ()) {
-				foreach (var c in tetrimino.GetMovedAbsolutePoints(new MoveAmount(-1,0))) {
-					EditorGUILayout.LabelField (c.ToString ());
-				}
+			EditorGUI.indentLevel++;
+			foreach (var c in tetrimino.GetMovedAbsolutePoints(new MoveAmount(-1,0))) {
+				EditorGUILayout.LabelField (c.ToString ());
 			}
+			EditorGUI.indentLevel--;
 
 
 		}

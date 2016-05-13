@@ -2,6 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 
+
+/// <summary>
+/// テトリミノ共通I/F
+/// </summary>
 public interface ITetrimino
 {
 	/// <summary>
@@ -33,6 +37,4 @@ public interface ITetrimino
 	/// 移動する
 	/// </summary>
 	void Move (MoveAmount moveAmount);
-
-
 }

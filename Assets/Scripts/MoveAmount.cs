@@ -50,4 +50,13 @@ public class MoveAmount
 		this.Rotate = rotate;
 	}
 
+
+	/// <summary>
+	/// 移動量なし
+	/// </summary>
+	public static MoveAmount Zero {
+		get {
+			return new MoveAmount (0, 0, RotateDir.None);
+		}
+	}
 }
