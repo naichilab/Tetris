@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+using UnityEngine;
+using System.Collections.Generic;
+
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
 	public bool IsDebugMode;
@@ -16,6 +19,9 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
 	[SerializeField]
 	private float Interval = 1.0f;
+
+	[SerializeField]
+	private InputBase UserInput;
 
 
 	/// <summary>
