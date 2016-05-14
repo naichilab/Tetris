@@ -3,11 +3,15 @@ using System.Collections;
 
 
 /// <summary>
-/// テトリスフィールドのセル１つ１つを表すクラス
+/// フィールドのセル１つ１つを表すクラス
 /// </summary>
 public class Cell
 {
-	public enum Content
+
+	/// <summary>
+	/// セルの内容物
+	/// </summary>
+	public enum Contents
 	{
 		/// <summary>
 		/// 空っぽ
@@ -20,40 +24,43 @@ public class Cell
 		/// <summary>
 		/// 壁
 		/// </summary>
-		Wall,
-		/// <summary>
-		/// このEnumの要素数
-		/// </summary>
-		Count
+		Wall
 	}
 
 	/// <summary>
 	/// このセルの内容物
 	/// </summary>
-	public Content Contents{ get; private set; }
+	public Contents Content{ get; private set; }
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="c">内容物</param>
-	public Cell (Content c)
+	public Cell (Contents c)
 	{
-		this.Contents = c;
+		this.Content = c;
 	}
 
+	/// <summary>
+	/// Cubeをセット
+	/// </summary>
 	public void SetCube ()
 	{
-		this.Contents = Content.Cube;
+		if (this.IsWall) {
+			throw new UnityException ("Cannot set the cube to the WALL");
+		}
+		
+		this.Content = Contents.Cube;
 	}
 
 	/// <summary>
 	/// 壁かどうか
 	/// </summary>
-	public bool IsWall{ get { return this.Contents == Content.Wall; } }
+	public bool IsWall{ get { return this.Content == Contents.Wall; } }
 
 
 	/// <summary>
 	/// 空かどうか
 	/// </summary>
-	public bool IsEmpty{ get { return this.Contents == Content.Empty; } }
+	public bool IsEmpty{ get { return this.Content == Contents.Empty; } }
 }

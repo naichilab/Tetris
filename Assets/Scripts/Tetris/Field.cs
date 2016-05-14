@@ -9,14 +9,31 @@ using UnityEditor;
 #endif
 
 
-
+/// <summary>
+/// テトリスフィールド
+/// </summary>
 public class Field:MonoBehaviour
 {
+
+	/// <summary>
+	/// 可用範囲の幅
+	/// </summary>
 	const int FIELD_WIDTH = 10;
+	/// <summary>
+	/// 可用範囲の高さ
+	/// </summary>
 	const int FIELD_HEIGHT = 20;
 
+
+	/// <summary>
+	/// フィールド
+	/// </summary>
 	Cell[,] field = null;
 
+
+	/// <summary>
+	/// 全セルを初期化
+	/// </summary>
 	public void Reset ()
 	{
 		//左右の壁、床、天井を含めたサイズで初期化
@@ -30,33 +47,28 @@ public class Field:MonoBehaviour
 
 				Cell cell = null;
 				if (leftWall || rightWall || floor) {
-					cell = new Cell (Cell.Content.Wall);
+					cell = new Cell (Cell.Contents.Wall);
 				} else {
-					cell = new Cell (Cell.Content.Empty);
+					cell = new Cell (Cell.Contents.Empty);
 				}
 				this.field [col, row] = cell;
 			}
 		}
 	}
 
-
-	//	/// <summary>
-	//	/// 移動した先に配置可能か調べる
-	//	/// </summary>
-	//	/// <param name="mino">テトリミノ</param>
-	//	/// <param name="moveAmount">移動量</param>
-	//	public bool Placeable (Tetrimino mino, MoveAmount moveAmount)
-	//	{
-	//		var movedAbsolutePoints = mino.GetMovedAbsolutePoints (moveAmount);
-	//		return movedAbsolutePoints.All (p => this.field [p.X, p.Y].IsEmpty);
-	//	}
-
+	/// <summary>
+	/// 指定座標に配置可能かどうか
+	/// </summary>
+	/// <param name="absolutePoints">Absolute points.</param>
 	public bool Placeable (IEnumerable<Point> absolutePoints)
 	{
 		return absolutePoints.All (p => this.field [p.X, p.Y].IsEmpty);
 	}
 
 
+	/// <summary>
+	/// テトリミノを固定する
+	/// </summary>
 	public void FixTetrimino (Tetrimino mino)
 	{
 		mino.GetAbsolutePoints ()
