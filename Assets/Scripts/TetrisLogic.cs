@@ -48,9 +48,9 @@ public class TetrisLogic : MonoBehaviour
 		case TetriminoOperation.MoveDown:
 			return this.Field.Placeable (this.CurrentMino, new MoveAmount (0, -1));
 		case TetriminoOperation.RotateClockwise:
-			return this.Field.Placeable (this.CurrentMino, new MoveAmount (MoveAmount.RotationDirection.Clockwise));
+			return this.Field.Placeable (this.CurrentMino, new MoveAmount (RotationDirection.Clockwise));
 		case TetriminoOperation.RotateCounterClockwise:
-			return this.Field.Placeable (this.CurrentMino, new MoveAmount (MoveAmount.RotationDirection.CounterClockwise));
+			return this.Field.Placeable (this.CurrentMino, new MoveAmount (RotationDirection.CounterClockwise));
 		}
 
 		return false;
@@ -79,10 +79,10 @@ public class TetrisLogic : MonoBehaviour
 			this.CurrentMino.Move (new Point (0, -1));
 			break;
 		case TetriminoOperation.RotateClockwise:
-			this.CurrentMino.Rotate (MoveAmount.RotationDirection.Clockwise);
+			this.CurrentMino.Rotate (RotationDirection.Clockwise);
 			break;
 		case TetriminoOperation.RotateCounterClockwise:
-			this.CurrentMino.Rotate (MoveAmount.RotationDirection.CounterClockwise);
+			this.CurrentMino.Rotate (RotationDirection.CounterClockwise);
 			break;
 		}
 	}

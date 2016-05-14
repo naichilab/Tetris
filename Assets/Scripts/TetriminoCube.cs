@@ -18,13 +18,13 @@ public class TetriminoCube : MonoBehaviour
 	/// <summary>
 	/// 回転移動する
 	/// </summary>
-	public void Rotate (MoveAmount.RotationDirection rotationDirection)
+	public void Rotate (RotationDirection rotationDirection)
 	{
 		switch (rotationDirection) {
-		case MoveAmount.RotationDirection.Clockwise:
+		case RotationDirection.Clockwise:
 			this.Point.RotateClockwise (Point.Zero);
 			break;
-		case MoveAmount.RotationDirection.CounterClockwise:
+		case RotationDirection.CounterClockwise:
 			this.Point.RotateCounterClockwise (Point.Zero);
 			break;
 		}

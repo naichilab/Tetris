@@ -7,15 +7,6 @@ using System.Collections;
 /// </summary>
 public class MoveAmount
 {
-	/// <summary>
-	/// 回転方向
-	/// </summary>
-	public enum RotationDirection
-	{
-		None,
-		Clockwise,
-		CounterClockwise
-	}
 
 	/// <summary>
 	/// 平行移動量
