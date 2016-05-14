@@ -50,11 +50,6 @@ public class Tetrimino : MonoBehaviour
 		return (Shapes)(shapeId);
 	}
 
-	public IEnumerable<TetriminoCube> GetCubes ()
-	{
-		return this.Cubes.AsEnumerable ();	
-	}
-
 	void Awake ()
 	{
 		//中心キューブ
@@ -113,29 +108,16 @@ public class Tetrimino : MonoBehaviour
 		cube.transform.localRotation = Quaternion.identity;
 
 		var cubeComponent = cube.GetComponent<TetriminoCube> ();
-		cubeComponent.SetParentTetrimino (this);
 		cubeComponent.Point = p;
 
 		this.Cubes.Add (cubeComponent);
 	}
 
-
-
-
-
-
-
-	public IEnumerable<Point> GetPoints ()
-	{
-		return this.Cubes.Select (c => c.Point);
-	}
-
-
 	public void SetAbsoluteCenterPoint (Point p)
 	{
 		this.AbsoluteCenterPoint = p;
 		this.transform.position = this.AbsoluteCenterPoint.Vector2;
-		this.Cubes.ForEach (c => c.SetAbsoluteCenterPoint (p + c.Point));
+		this.Cubes.ForEach (c => c.transform.position = (p + c.Point).Vector2);
 	}
 
 	/// <summary>
@@ -144,14 +126,6 @@ public class Tetrimino : MonoBehaviour
 	public Point GetAbsoluteCenterPoint ()
 	{
 		return this.AbsoluteCenterPoint;
-	}
-
-	/// <summary>
-	/// テトリミノを構成するCubeそれぞれの中心からの座標リスト
-	/// </summary>
-	public IEnumerable<Point> GetRelationalPoints ()
-	{
-		return this.Cubes.Select (c => c.Point);
 	}
 
 	/// <summary>
@@ -169,10 +143,10 @@ public class Tetrimino : MonoBehaviour
 	{
 		return this.GetAbsolutePoints ().Select (p => {
 			p.Move (moveAmount.Offset.X, moveAmount.Offset.Y);
-			if (moveAmount.Rotate == MoveAmount.RotateDir.Clockwise) {
+			if (moveAmount.Rotate == MoveAmount.RotationDirection.Clockwise) {
 				p.RotateClockwise (this.AbsoluteCenterPoint);
 			}
-			if (moveAmount.Rotate == MoveAmount.RotateDir.CounterClockwise) {
+			if (moveAmount.Rotate == MoveAmount.RotationDirection.CounterClockwise) {
 				p.RotateCounterClockwise (this.AbsoluteCenterPoint);
 			}
 			return p;
@@ -180,13 +154,21 @@ public class Tetrimino : MonoBehaviour
 	}
 
 	/// <summary>
+	/// 回転移動する
+	/// </summary>
+	public void Rotate (MoveAmount.RotationDirection rotationDirection)
+	{
+		this.Cubes.ForEach (c => c.Rotate (rotationDirection));
+	}
+
+	/// <summary>
 	/// 移動する
 	/// </summary>
 	/// <param name="moveAmount">移動量</param>
-	public void Move (MoveAmount moveAmount)
+	public void Move (Point offset)
 	{
-		this.AbsoluteCenterPoint.Move (moveAmount.Offset);
-		this.Cubes.ForEach (c => c.Move (moveAmount));
+		this.AbsoluteCenterPoint.Move (offset);
+		this.transform.position = this.AbsoluteCenterPoint.Vector2;
 	}
 
 
@@ -215,7 +197,7 @@ public class Tetrimino : MonoBehaviour
 
 			EditorGUILayout.LabelField ("右回転座標");
 			EditorGUI.indentLevel++;
-			foreach (var c in tetrimino.GetMovedAbsolutePoints(new MoveAmount(MoveAmount.RotateDir.Clockwise))) {
+			foreach (var c in tetrimino.GetMovedAbsolutePoints(new MoveAmount(MoveAmount.RotationDirection.Clockwise))) {
 				EditorGUILayout.LabelField (c.ToString ());
 			}
 			EditorGUI.indentLevel--;

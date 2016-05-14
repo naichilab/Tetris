@@ -48,9 +48,9 @@ public class TetrisLogic : MonoBehaviour
 		case TetriminoOperation.MoveDown:
 			return this.Field.Placeable (this.CurrentMino, new MoveAmount (0, -1));
 		case TetriminoOperation.RotateClockwise:
-			return this.Field.Placeable (this.CurrentMino, new MoveAmount (MoveAmount.RotateDir.Clockwise));
+			return this.Field.Placeable (this.CurrentMino, new MoveAmount (MoveAmount.RotationDirection.Clockwise));
 		case TetriminoOperation.RotateCounterClockwise:
-			return this.Field.Placeable (this.CurrentMino, new MoveAmount (MoveAmount.RotateDir.CounterClockwise));
+			return this.Field.Placeable (this.CurrentMino, new MoveAmount (MoveAmount.RotationDirection.CounterClockwise));
 		}
 
 		return false;
@@ -70,19 +70,19 @@ public class TetrisLogic : MonoBehaviour
 
 		switch (op) {
 		case TetriminoOperation.MoveLeft:
-			this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (-1, 0));
+			this.CurrentMino.Move (new Point (-1, 0));
 			break;
 		case TetriminoOperation.MoveRight:
-			this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (1, 0));
+			this.CurrentMino.Move (new Point (1, 0));
 			break;
 		case TetriminoOperation.MoveDown:
-			this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (0, -1));
+			this.CurrentMino.Move (new Point (0, -1));
 			break;
 		case TetriminoOperation.RotateClockwise:
-			this.CurrentMino.Move (new MoveAmount (MoveAmount.RotateDir.Clockwise));
+			this.CurrentMino.Rotate (MoveAmount.RotationDirection.Clockwise);
 			break;
 		case TetriminoOperation.RotateCounterClockwise:
-			this.CurrentMino.Move (new MoveAmount (MoveAmount.RotateDir.CounterClockwise));
+			this.CurrentMino.Rotate (MoveAmount.RotationDirection.CounterClockwise);
 			break;
 		}
 	}

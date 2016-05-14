@@ -10,7 +10,7 @@ public class MoveAmount
 	/// <summary>
 	/// 回転方向
 	/// </summary>
-	public enum RotateDir
+	public enum RotationDirection
 	{
 		None,
 		Clockwise,
@@ -25,13 +25,13 @@ public class MoveAmount
 	/// <summary>
 	/// 回転方向
 	/// </summary>
-	public RotateDir Rotate{ get; set; }
+	public RotationDirection Rotate{ get; set; }
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="rotate">Rotate.</param>
-	public MoveAmount (RotateDir rotate) : this (0, 0, rotate)
+	public MoveAmount (RotationDirection rotate) : this (0, 0, rotate)
 	{
 
 	}
@@ -42,7 +42,7 @@ public class MoveAmount
 	/// <param name="x">X軸移動量</param>
 	/// <param name="y">Y軸移動量</param>
 	/// <param name="rotate">回転方向</param>
-	public MoveAmount (int x, int y, RotateDir rotate = RotateDir.None) : this (new Point (x, y), rotate)
+	public MoveAmount (int x, int y, RotationDirection rotate = RotationDirection.None) : this (new Point (x, y), rotate)
 	{
 		
 	}
@@ -52,7 +52,7 @@ public class MoveAmount
 	/// </summary>
 	/// <param name="offset">移動量</param>
 	/// <param name="rotate">回転方向</param>
-	public MoveAmount (Point offset, RotateDir rotate = RotateDir.None)
+	public MoveAmount (Point offset, RotationDirection rotate = RotationDirection.None)
 	{
 		this.Offset = offset;
 		this.Rotate = rotate;
@@ -65,7 +65,7 @@ public class MoveAmount
 	/// </summary>
 	public static MoveAmount Zero {
 		get {
-			return new MoveAmount (0, 0, RotateDir.None);
+			return new MoveAmount (0, 0, RotationDirection.None);
 		}
 	}
 }
