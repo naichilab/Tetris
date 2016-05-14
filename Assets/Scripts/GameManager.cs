@@ -44,29 +44,41 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 	{
 		this.Logic.SetTetriminoGenerator (this.Generator);
 		this.Logic.SetField (this.Field);
-		
-	}
 
-	public void Update ()
-	{
-		//ユーザーの操作
-		var p = this.transform.position;
-		if (Input.GetKey (KeyCode.LeftArrow)) {
+		this.UserInput.LeftKeyPressed += (sender, e) => {
 			if (this.Logic.CanMove (TetrisLogic.Direction.Left)) {
 				this.Logic.Move (TetrisLogic.Direction.Left);
 			}
-		} else if (Input.GetKey (KeyCode.RightArrow)) {
+		};
+		this.UserInput.RightKeyPressed += (sender, e) => {
 			if (this.Logic.CanMove (TetrisLogic.Direction.Right)) {
 				this.Logic.Move (TetrisLogic.Direction.Right);
 			}
-		} else if (Input.GetKey (KeyCode.DownArrow)) {
+
+		};
+		this.UserInput.DownKeyPressed += (sender, e) => {
 			if (this.Logic.CanMove (TetrisLogic.Direction.Bottom)) {
 				this.Logic.Move (TetrisLogic.Direction.Bottom);
 			} else {
 				this.Logic.FixMino ();
 				this.Logic.CreateMino ();
 			}
-		}	
+		};
+		this.UserInput.HardDropKeyPressed += (sender, e) => {
+			while (this.Logic.CanMove (TetrisLogic.Direction.Bottom)) {
+				this.Logic.Move (TetrisLogic.Direction.Bottom);
+			}
+			this.Logic.FixMino ();
+			this.Logic.CreateMino ();
+		};
+		this.UserInput.RotateClockwiseKeyPressed += (sender, e) => {
+		};
+		this.UserInput.RotateCounterClockwiseKeyPressed += (sender, e) => {
+		};
+	}
+
+	public void Update ()
+	{
 
 		//自動落下
 		if (this.LastUpdated + this.Interval < Time.time) {

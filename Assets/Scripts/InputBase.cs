@@ -11,6 +11,7 @@ public abstract class InputBase:MonoBehaviour
 	public event EventHandler DownKeyPressed;
 	public event EventHandler LeftKeyPressed;
 	public event EventHandler RightKeyPressed;
+	public event EventHandler HardDropKeyPressed;
 	public event EventHandler RotateClockwiseKeyPressed;
 	public event EventHandler RotateCounterClockwiseKeyPressed;
 
@@ -31,6 +32,13 @@ public abstract class InputBase:MonoBehaviour
 		if (this.RightKeyPressed != null)
 			this.RightKeyPressed (this, EventArgs.Empty);
 	}
+
+	protected void OnHardDropKeyPressed ()
+	{
+		if (this.HardDropKeyPressed != null)
+			this.HardDropKeyPressed (this, EventArgs.Empty);
+	}
+
 
 	protected void OnRotateClockwiseKeyPressed ()
 	{
