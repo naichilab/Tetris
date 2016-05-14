@@ -46,27 +46,27 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 		this.Logic.SetField (this.Field);
 
 		this.UserInput.LeftKeyPressed += (sender, e) => {
-			if (this.Logic.CanMove (TetrisLogic.Direction.Left)) {
-				this.Logic.Move (TetrisLogic.Direction.Left);
+			if (this.Logic.CanMove (TetriminoOperation.MoveLeft)) {
+				this.Logic.Move (TetriminoOperation.MoveLeft);
 			}
 		};
 		this.UserInput.RightKeyPressed += (sender, e) => {
-			if (this.Logic.CanMove (TetrisLogic.Direction.Right)) {
-				this.Logic.Move (TetrisLogic.Direction.Right);
+			if (this.Logic.CanMove (TetriminoOperation.MoveRight)) {
+				this.Logic.Move (TetriminoOperation.MoveRight);
 			}
 
 		};
 		this.UserInput.DownKeyPressed += (sender, e) => {
-			if (this.Logic.CanMove (TetrisLogic.Direction.Bottom)) {
-				this.Logic.Move (TetrisLogic.Direction.Bottom);
+			if (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
+				this.Logic.Move (TetriminoOperation.MoveDown);
 			} else {
 				this.Logic.FixMino ();
 				this.Logic.CreateMino ();
 			}
 		};
 		this.UserInput.HardDropKeyPressed += (sender, e) => {
-			while (this.Logic.CanMove (TetrisLogic.Direction.Bottom)) {
-				this.Logic.Move (TetrisLogic.Direction.Bottom);
+			while (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
+				this.Logic.Move (TetriminoOperation.MoveDown);
 			}
 			this.Logic.FixMino ();
 			this.Logic.CreateMino ();
@@ -88,8 +88,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 					throw new System.NotImplementedException ("GameOver");
 				}
 			} else {
-				if (this.Logic.CanMove (TetrisLogic.Direction.Bottom)) {
-					this.Logic.Move (TetrisLogic.Direction.Bottom);
+				if (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
+					this.Logic.Move (TetriminoOperation.MoveDown);
 				} else {
 					this.Logic.FixMino ();
 					this.Logic.CreateMino ();

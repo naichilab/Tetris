@@ -3,12 +3,7 @@ using System.Collections;
 
 public class TetrisLogic : MonoBehaviour
 {
-	public enum Direction
-	{
-		Right,
-		Left,
-		Bottom
-	}
+
 
 	public Tetrimino CurrentMino = null;
 
@@ -37,18 +32,20 @@ public class TetrisLogic : MonoBehaviour
 
 	}
 
-	public bool CanMove (Direction dir)
+
+
+	public bool CanMove (TetriminoOperation op)
 	{
 		if (this.CurrentMino == null) {
 			return false;
 		}
 		
-		switch (dir) {
-		case Direction.Left:
+		switch (op) {
+		case TetriminoOperation.MoveLeft:
 			return this.Field.Placeable (this.CurrentMino, new MoveAmount (-1, 0));
-		case Direction.Right:
+		case TetriminoOperation.MoveRight:
 			return this.Field.Placeable (this.CurrentMino, new MoveAmount (1, 0));
-		case Direction.Bottom:
+		case TetriminoOperation.MoveDown:
 			return this.Field.Placeable (this.CurrentMino, new MoveAmount (0, -1));
 		}
 
@@ -61,24 +58,23 @@ public class TetrisLogic : MonoBehaviour
 	}
 
 
-	public void Move (Direction dir)
+	public void Move (TetriminoOperation op)
 	{
 		if (this.CurrentMino == null) {
 			return;
 		}
 
-		switch (dir) {
-		case Direction.Left:
+		switch (op) {
+		case TetriminoOperation.MoveLeft:
 			this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (-1, 0));
 			break;
-		case Direction.Right:
+		case TetriminoOperation.MoveRight:
 			this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (1, 0));
 			break;
-		case Direction.Bottom:
+		case TetriminoOperation.MoveDown:
 			this.CurrentMino.SetAbsoluteCenterPoint (this.CurrentMino.GetAbsoluteCenterPoint () + new Point (0, -1));
 			break;
 		}
-
 	}
 
 	public void CreateMino ()
