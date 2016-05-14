@@ -99,7 +99,15 @@ public class TetriminoCube : MonoBehaviour,ITetrimino
 			this.Point.Move (offset.X, offset.Y);
 		}
 
-		//回転は不要
+		//回転
+		if (moveAmount.Rotate != MoveAmount.RotateDir.None) {
+			if (moveAmount.Rotate == MoveAmount.RotateDir.Clockwise) {
+				this.Point.RotateClockwise (Point.Zero);
+			}
+			if (moveAmount.Rotate == MoveAmount.RotateDir.CounterClockwise) {
+				this.Point.RotateCounterClockwise (Point.Zero);
+			}
+		}
 	}
 
 

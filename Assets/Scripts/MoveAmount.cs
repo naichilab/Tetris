@@ -27,6 +27,14 @@ public class MoveAmount
 	/// </summary>
 	public RotateDir Rotate{ get; set; }
 
+	/// <summary>
+	/// コンストラクタ
+	/// </summary>
+	/// <param name="rotate">Rotate.</param>
+	public MoveAmount (RotateDir rotate) : this (0, 0, rotate)
+	{
+
+	}
 
 	/// <summary>
 	/// コンストラクタ
@@ -49,6 +57,7 @@ public class MoveAmount
 		this.Offset = offset;
 		this.Rotate = rotate;
 	}
+
 
 
 	/// <summary>

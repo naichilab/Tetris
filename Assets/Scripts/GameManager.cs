@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-
-using UnityEngine;
 using System.Collections.Generic;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
@@ -72,8 +70,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 			this.Logic.CreateMino ();
 		};
 		this.UserInput.RotateClockwiseKeyPressed += (sender, e) => {
+			if (this.Logic.CanMove (TetriminoOperation.RotateClockwise)) {
+				this.Logic.Move (TetriminoOperation.RotateClockwise);
+			}
 		};
 		this.UserInput.RotateCounterClockwiseKeyPressed += (sender, e) => {
+			if (this.Logic.CanMove (TetriminoOperation.RotateCounterClockwise)) {
+				this.Logic.Move (TetriminoOperation.RotateCounterClockwise);
+			}
 		};
 	}
 

@@ -185,20 +185,8 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 	/// <param name="moveAmount">移動量</param>
 	public void Move (MoveAmount moveAmount)
 	{
-		//平行移動
-		if (!moveAmount.Offset.IsZero) {
-			var offset = moveAmount.Offset;
-			this.AbsoluteCenterPoint.Move (offset.X, offset.Y);
-			this.Cubes.ForEach (c => c.Move (moveAmount));
-		}
-
-		//回転
-//		if (moveAmount.Rotate == MoveAmount.RotateDir.Clockwise) {
-//			this.Cubes.ForEach (c => c.RotateClockwise ());
-//		}
-//		if (moveAmount.Rotate == MoveAmount.RotateDir.CounterClockwise) {
-//			this.Cubes.ForEach (c => c.RotateCounterClockwise ());
-//		}
+		this.AbsoluteCenterPoint.Move (moveAmount.Offset);
+		this.Cubes.ForEach (c => c.Move (moveAmount));
 	}
 
 
@@ -221,6 +209,13 @@ public class Tetrimino : MonoBehaviour,ITetrimino
 			EditorGUILayout.LabelField ("左移動座標");
 			EditorGUI.indentLevel++;
 			foreach (var c in tetrimino.GetMovedAbsolutePoints(new MoveAmount(-1,0))) {
+				EditorGUILayout.LabelField (c.ToString ());
+			}
+			EditorGUI.indentLevel--;
+
+			EditorGUILayout.LabelField ("右回転座標");
+			EditorGUI.indentLevel++;
+			foreach (var c in tetrimino.GetMovedAbsolutePoints(new MoveAmount(MoveAmount.RotateDir.Clockwise))) {
 				EditorGUILayout.LabelField (c.ToString ());
 			}
 			EditorGUI.indentLevel--;

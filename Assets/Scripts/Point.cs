@@ -20,29 +20,39 @@ public struct Point
 		this.Y = y;
 	}
 
-	public void Move (int x = 0, int y = 0)
-	{
-		this.X += x;
-		this.Y += y;
-	}
 
 	public void Move (Point offset)
 	{
 		this.Move (offset.X, offset.Y);
 	}
 
+	public void Move (int x = 0, int y = 0)
+	{
+		this.X += x;
+		this.Y += y;
+	}
+
 	public void RotateClockwise (Point center)
 	{
-		//todo 
+		//右回転
+		// x =  y;
+		// y = -x;
+		Point p = this - center;
+		Point p2 = center + new Point (p.Y, -p.X);
+		this.X = p2.X;
+		this.Y = p2.Y;
 	}
 
 	public void RotateCounterClockwise (Point center)
 	{
-		//todo 
+		//左回転
+		// x = -y;
+		// y =  x;
+		Point p = this - center;
+		Point p2 = center + new Point (-p.Y, p.X);
+		this.X = p2.X;
+		this.Y = p2.Y;
 	}
-
-
-
 
 	public static Point Zero {
 		get {

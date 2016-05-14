@@ -48,7 +48,6 @@ public class Field:MonoBehaviour
 	public bool Placeable (ITetrimino mino, MoveAmount moveAmount)
 	{	
 		var movedAbsolutePoints = mino.GetMovedAbsolutePoints (moveAmount);
-
 		return movedAbsolutePoints.All (p => this.field [p.X, p.Y].IsEmpty);
 	}
 
