@@ -8,7 +8,7 @@ using System.Linq;
 using UnityEditor;
 #endif
 
-public class Tetrimino : MonoBehaviour,ITetrimino
+public class Tetrimino : MonoBehaviour
 {
 	/// <summary>
 	/// テトリミノの形状

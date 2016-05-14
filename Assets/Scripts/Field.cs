@@ -45,20 +45,18 @@ public class Field:MonoBehaviour
 	/// </summary>
 	/// <param name="mino">テトリミノ</param>
 	/// <param name="moveAmount">移動量</param>
-	public bool Placeable (ITetrimino mino, MoveAmount moveAmount)
+	public bool Placeable (Tetrimino mino, MoveAmount moveAmount)
 	{	
 		var movedAbsolutePoints = mino.GetMovedAbsolutePoints (moveAmount);
 		return movedAbsolutePoints.All (p => this.field [p.X, p.Y].IsEmpty);
 	}
 
-	public void FixTetrimino (ITetrimino mino)
+	public void FixTetrimino (Tetrimino mino)
 	{
 		mino.GetAbsolutePoints ()
 			.ToList ()
 			.ForEach (p => this.field [p.X, p.Y].SetCube ());
 	}
-
-
 
 	#if UNITY_EDITOR
 	[CustomEditor (typeof(Field))]
