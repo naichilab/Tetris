@@ -16,13 +16,13 @@ public class MoveAmount
 	/// <summary>
 	/// 回転方向
 	/// </summary>
-	public RotationDirection Rotate{ get; set; }
+	public RotateDirection Rotate{ get; set; }
 
 	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="rotate">Rotate.</param>
-	public MoveAmount (RotationDirection rotate) : this (0, 0, rotate)
+	public MoveAmount (RotateDirection rotate) : this (0, 0, rotate)
 	{
 
 	}
@@ -33,7 +33,7 @@ public class MoveAmount
 	/// <param name="x">X軸移動量</param>
 	/// <param name="y">Y軸移動量</param>
 	/// <param name="rotate">回転方向</param>
-	public MoveAmount (int x, int y, RotationDirection rotate = RotationDirection.None) : this (new Point (x, y), rotate)
+	public MoveAmount (int x, int y, RotateDirection rotate = RotateDirection.None) : this (new Point (x, y), rotate)
 	{
 		
 	}
@@ -43,7 +43,7 @@ public class MoveAmount
 	/// </summary>
 	/// <param name="offset">移動量</param>
 	/// <param name="rotate">回転方向</param>
-	public MoveAmount (Point offset, RotationDirection rotate = RotationDirection.None)
+	public MoveAmount (Point offset, RotateDirection rotate = RotateDirection.None)
 	{
 		this.Offset = offset;
 		this.Rotate = rotate;
@@ -56,7 +56,7 @@ public class MoveAmount
 	/// </summary>
 	public static MoveAmount Zero {
 		get {
-			return new MoveAmount (0, 0, RotationDirection.None);
+			return new MoveAmount (0, 0, RotateDirection.None);
 		}
 	}
 }

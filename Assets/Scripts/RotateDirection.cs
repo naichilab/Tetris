@@ -1,7 +1,7 @@
 ﻿/// <summary>
 /// 回転方向
 /// </summary>
-public enum RotationDirection
+public enum RotateDirection
 {
 	/// <summary>
 	/// 回転なし

@@ -13,23 +13,15 @@ public class TetriminoCube : MonoBehaviour
 	/// <summary>
 	/// 座標（テトリミノ中心座標からの距離）
 	/// </summary>
-	public Point Point;
+	public Point DistanceFromTetriminoCenter;
 
 	/// <summary>
 	/// 回転移動する
 	/// </summary>
-	public void Rotate (RotationDirection rotationDirection)
+	public void Rotate (RotateDirection rotationDirection)
 	{
-		switch (rotationDirection) {
-		case RotationDirection.Clockwise:
-			this.Point.RotateClockwise (Point.Zero);
-			break;
-		case RotationDirection.CounterClockwise:
-			this.Point.RotateCounterClockwise (Point.Zero);
-			break;
-		}
-
-		this.transform.localPosition = this.Point.Vector2;
+		this.DistanceFromTetriminoCenter.Rotate (rotationDirection);
+		this.transform.localPosition = this.DistanceFromTetriminoCenter.Vector2;
 	}
 
 	#if UNITY_EDITOR
@@ -40,7 +32,7 @@ public class TetriminoCube : MonoBehaviour
 		{
 			base.OnInspectorGUI ();
 			TetriminoCube tetriminoCube = target as TetriminoCube;
-			EditorGUILayout.LabelField ("座標", tetriminoCube.Point.ToString ());
+			EditorGUILayout.LabelField ("座標", tetriminoCube.DistanceFromTetriminoCenter.ToString ());
 		}
 	}
 	#endif

@@ -23,35 +23,35 @@ public struct Point
 
 	public void Move (Point offset)
 	{
-		this.Move (offset.X, offset.Y);
+		this.X += offset.X;
+		this.Y += offset.Y;
 	}
 
-	public void Move (int x = 0, int y = 0)
+	public void Rotate (RotateDirection dir)
 	{
-		this.X += x;
-		this.Y += y;
+		var temp = this;
+		
+		switch (dir) {
+		case  RotateDirection.Clockwise:
+			this.X = temp.Y;
+			this.Y = -temp.X;
+			break;
+		case RotateDirection.CounterClockwise:
+			this.X = -temp.Y;
+			this.Y = temp.X;
+			break;
+		}
 	}
 
-	public void RotateClockwise (Point center)
+	public void Rotate (RotateDirection dir, Point center)
 	{
-		//右回転
-		// x =  y;
-		// y = -x;
-		Point p = this - center;
-		Point p2 = center + new Point (p.Y, -p.X);
-		this.X = p2.X;
-		this.Y = p2.Y;
-	}
+		this.X -= center.X;
+		this.Y -= center.Y;
 
-	public void RotateCounterClockwise (Point center)
-	{
-		//左回転
-		// x = -y;
-		// y =  x;
-		Point p = this - center;
-		Point p2 = center + new Point (-p.Y, p.X);
-		this.X = p2.X;
-		this.Y = p2.Y;
+		Rotate (dir);
+
+		this.X += center.X;
+		this.Y += center.Y;
 	}
 
 	public static Point Zero {
