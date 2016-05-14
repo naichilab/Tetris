@@ -40,16 +40,22 @@ public class Field:MonoBehaviour
 	}
 
 
-	/// <summary>
-	/// 移動した先に配置可能か調べる
-	/// </summary>
-	/// <param name="mino">テトリミノ</param>
-	/// <param name="moveAmount">移動量</param>
-	public bool Placeable (Tetrimino mino, MoveAmount moveAmount)
-	{	
-		var movedAbsolutePoints = mino.GetMovedAbsolutePoints (moveAmount);
-		return movedAbsolutePoints.All (p => this.field [p.X, p.Y].IsEmpty);
+	//	/// <summary>
+	//	/// 移動した先に配置可能か調べる
+	//	/// </summary>
+	//	/// <param name="mino">テトリミノ</param>
+	//	/// <param name="moveAmount">移動量</param>
+	//	public bool Placeable (Tetrimino mino, MoveAmount moveAmount)
+	//	{
+	//		var movedAbsolutePoints = mino.GetMovedAbsolutePoints (moveAmount);
+	//		return movedAbsolutePoints.All (p => this.field [p.X, p.Y].IsEmpty);
+	//	}
+
+	public bool Placeable (IEnumerable<Point> absolutePoints)
+	{
+		return absolutePoints.All (p => this.field [p.X, p.Y].IsEmpty);
 	}
+
 
 	public void FixTetrimino (Tetrimino mino)
 	{

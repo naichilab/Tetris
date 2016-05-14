@@ -88,9 +88,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 		if (this.LastUpdated + this.Interval < Time.time) {
 			if (!this.Logic.HasCurrentMino) {
 				this.Logic.CreateMino ();
-				if (!this.Logic.Placeable (MoveAmount.Zero)) {
-					throw new System.NotImplementedException ("GameOver");
-				}
 			} else {
 				if (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
 					this.Logic.Move (TetriminoOperation.MoveDown);

@@ -7,7 +7,9 @@ using System.Linq;
 using UnityEditor;
 #endif
 
-
+/// <summary>
+/// テトリミノを構成する立方体
+/// </summary>
 public class TetriminoCube : MonoBehaviour
 {
 	/// <summary>
@@ -21,7 +23,7 @@ public class TetriminoCube : MonoBehaviour
 	public void Rotate (RotateDirection rotationDirection)
 	{
 		this.DistanceFromTetriminoCenter.Rotate (rotationDirection);
-		this.transform.localPosition = this.DistanceFromTetriminoCenter.Vector2;
+		this.transform.localPosition = this.DistanceFromTetriminoCenter.ToVector2;
 	}
 
 	#if UNITY_EDITOR
@@ -32,7 +34,7 @@ public class TetriminoCube : MonoBehaviour
 		{
 			base.OnInspectorGUI ();
 			TetriminoCube tetriminoCube = target as TetriminoCube;
-			EditorGUILayout.LabelField ("座標", tetriminoCube.DistanceFromTetriminoCenter.ToString ());
+			EditorGUILayout.LabelField ("中心からの座標", tetriminoCube.DistanceFromTetriminoCenter.ToString ());
 		}
 	}
 	#endif

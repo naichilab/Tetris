@@ -42,23 +42,18 @@ public class TetrisLogic : MonoBehaviour
 		
 		switch (op) {
 		case TetriminoOperation.MoveLeft:
-			return this.Field.Placeable (this.CurrentMino, new MoveAmount (-1, 0));
+			return this.Field.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (-1, 0)));
 		case TetriminoOperation.MoveRight:
-			return this.Field.Placeable (this.CurrentMino, new MoveAmount (1, 0));
+			return this.Field.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (1, 0)));
 		case TetriminoOperation.MoveDown:
-			return this.Field.Placeable (this.CurrentMino, new MoveAmount (0, -1));
+			return this.Field.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (0, -1)));
 		case TetriminoOperation.RotateClockwise:
-			return this.Field.Placeable (this.CurrentMino, new MoveAmount (RotateDirection.Clockwise));
+			return this.Field.Placeable (this.CurrentMino.GetRotatedAbsolutePoints (RotateDirection.Clockwise));
 		case TetriminoOperation.RotateCounterClockwise:
-			return this.Field.Placeable (this.CurrentMino, new MoveAmount (RotateDirection.CounterClockwise));
+			return this.Field.Placeable (this.CurrentMino.GetRotatedAbsolutePoints (RotateDirection.CounterClockwise));
 		}
 
 		return false;
-	}
-
-	public bool Placeable (MoveAmount moveAmount)
-	{
-		return this.Field.Placeable (this.CurrentMino, moveAmount);
 	}
 
 

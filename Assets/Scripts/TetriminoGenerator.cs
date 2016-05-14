@@ -60,7 +60,7 @@ public class TetriminoGenerator : MonoBehaviour
 		mino.transform.localPosition = Vector3.zero;
 		mino.transform.localRotation = Quaternion.identity;
 
-		mino.transform.position = pos.Vector2;
+		mino.transform.position = pos.ToVector2;
 		mino.transform.rotation = Quaternion.identity;
 
 		var tetrimino = mino.GetComponent<Tetrimino> ();
