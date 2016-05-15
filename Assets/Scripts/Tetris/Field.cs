@@ -24,7 +24,6 @@ public class Field:MonoBehaviour
 	/// </summary>
 	const int FIELD_HEIGHT = 20;
 
-
 	/// <summary>
 	/// フィールド
 	/// </summary>
@@ -37,10 +36,10 @@ public class Field:MonoBehaviour
 	public void Reset ()
 	{
 		//左右の壁、床、天井を含めたサイズで初期化
-		this.field = new Cell[FIELD_WIDTH + 2, FIELD_HEIGHT + 2];
+		this.field = new Cell[FIELD_WIDTH + 2, FIELD_HEIGHT + 4];
 
 		for (int col = 0; col < FIELD_WIDTH + 2; col++) {
-			for (int row = 0; row < FIELD_HEIGHT + 2; row++) {
+			for (int row = 0; row < FIELD_HEIGHT + 4; row++) {
 				bool leftWall = col == 0;
 				bool rightWall = col == FIELD_WIDTH + 1;
 				bool floor = row == 0;

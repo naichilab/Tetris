@@ -120,13 +120,6 @@ public class Tetrimino : MonoBehaviour
 		this.Cubes.ForEach (c => c.transform.position = (p + c.DistanceFromTetriminoCenter).ToVector2);
 	}
 
-	/// <summary>
-	/// テトリミノの中心となるCubeの絶対座標
-	/// </summary>
-	public Point GetAbsoluteCenterPoint ()
-	{
-		return this.AbsoluteCenterPoint;
-	}
 
 	/// <summary>
 	/// テトリミノを構成するCubeそれぞれの絶対座標
@@ -135,24 +128,6 @@ public class Tetrimino : MonoBehaviour
 	{
 		return this.Cubes.Select (c => this.AbsoluteCenterPoint + c.DistanceFromTetriminoCenter);
 	}
-
-	//	/// <summary>
-	//	/// 移動後の座標を取得する
-	//	/// </summary>
-	//	public IEnumerable<Point> GetMovedAbsolutePoints (MoveAmount moveAmount)
-	//	{
-	//		return this.GetAbsolutePoints ().Select (p => {
-	//			p.Move (moveAmount.Offset);
-	//			if (moveAmount.Rotate == RotateDirection.Clockwise) {
-	//				p.Rotate (RotateDirection.Clockwise, this.AbsoluteCenterPoint);
-	//			}
-	//			if (moveAmount.Rotate == RotateDirection.CounterClockwise) {
-	//				p.Rotate (RotateDirection.CounterClockwise, this.AbsoluteCenterPoint);
-	//			}
-	//			return p;
-	//		});
-	//	}
-
 
 	/// <summary>
 	/// 平行移動後の絶対座標を取得
