@@ -18,6 +18,10 @@ public class Cell
 		/// </summary>
 		Empty,
 		/// <summary>
+		/// 天井
+		/// </summary>
+		Ceil,
+		/// <summary>
 		/// 壁
 		/// </summary>
 		Wall
@@ -55,6 +59,8 @@ public class Cell
 	/// 壁かどうか
 	/// </summary>
 	public bool IsWall{ get { return this.Content == Contents.Wall; } }
+
+	public bool IsCeil { get { return this.Content == Contents.Ceil; } }
 
 	/// <summary>
 	/// Cube設置可能か

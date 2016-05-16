@@ -103,8 +103,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
 		this.Logic.ClearLines ();
 
-		this.Logic.CreateMino ();
-
+		if (this.Logic.IsGameOver) {
+			Debug.Log ("Game Over!!!!!");
+		} else {
+			this.Logic.CreateMino ();
+		}
 	}
 
 }

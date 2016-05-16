@@ -108,4 +108,7 @@ public class TetrisLogic : MonoBehaviour
 		
 	}
 
+	public bool IsGameOver 
+	{ get { return this.Field.CeilReached; } }
+
 }

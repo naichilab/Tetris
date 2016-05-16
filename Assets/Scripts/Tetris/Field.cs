@@ -24,18 +24,28 @@ public class Field:MonoBehaviour
 	/// </summary>
 	const int FIELD_HEIGHT = 20;
 
+	/// <summary>
+	/// 壁の厚み
+	/// </summary>
 	const int WALL_THICKNESS = 1;
 
+	/// <summary>
+	/// 天井の厚み
+	/// </summary>
 	const int CEIL_THICKNESS = 3;
 
+	/// <summary>
+	/// 合計幅
+	/// </summary>
 	const int TOTAL_WIDTH = WALL_THICKNESS + FIELD_WIDTH + WALL_THICKNESS;
+
+	/// <summary>
+	/// 合計高さ
+	/// </summary>
 	const int TOTAL_HEIGHT = WALL_THICKNESS + FIELD_HEIGHT + CEIL_THICKNESS;
 
+	const int CEIL_HEIGHT = WALL_THICKNESS + FIELD_HEIGHT;
 
-	//	/// <summary>
-	//	/// フィールド
-	//	/// </summary>
-	//	Cell[,] field = null;
 
 	public List<Row> Rows { get; private set; }
 
@@ -60,10 +70,13 @@ public class Field:MonoBehaviour
 				bool leftWall = c == 0;
 				bool rightWall = c == FIELD_WIDTH + 1;
 				bool floor = r == 0;
+				bool ceil = r >= CEIL_HEIGHT;
 
 				Cell cell = null;
 				if (leftWall || rightWall || floor) {
 					cell = new Cell (Cell.Contents.Wall);
+				} else if (ceil) {
+					cell = new Cell (Cell.Contents.Ceil);
 				} else {
 					cell = new Cell (Cell.Contents.Empty);
 				}
@@ -96,6 +109,12 @@ public class Field:MonoBehaviour
 		}
 	}
 
+
+
+
+	/// <summary>
+	/// 揃った行を消す
+	/// </summary>
 	public void ClearLines ()
 	{
 		while (true) {
@@ -129,6 +148,16 @@ public class Field:MonoBehaviour
 		}
 	}
 
+
+	/// <summary>
+	/// 天井まで届いたテトリミノがあるか
+	/// </summary>
+	/// <value>The ceil reached.</value>
+	public bool CeilReached {
+		get {
+			return this.Rows.Any (r => r.Cells.Any (c => c.IsCeil && c.HasCube));
+		}
+	}
 
 
 	#if UNITY_EDITOR
