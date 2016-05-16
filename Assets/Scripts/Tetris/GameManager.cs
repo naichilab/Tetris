@@ -58,16 +58,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 			if (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
 				this.Logic.Move (TetriminoOperation.MoveDown);
 			} else {
-				this.Logic.FixMino ();
-				this.Logic.CreateMino ();
+				this.FixMino ();
 			}
 		};
 		this.UserInput.HardDropKeyPressed += (sender, e) => {
 			while (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
 				this.Logic.Move (TetriminoOperation.MoveDown);
 			}
-			this.Logic.FixMino ();
-			this.Logic.CreateMino ();
+			this.FixMino ();
 		};
 		this.UserInput.RotateClockwiseKeyPressed += (sender, e) => {
 			if (this.Logic.CanMove (TetriminoOperation.RotateClockwise)) {
@@ -92,13 +90,21 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 				if (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
 					this.Logic.Move (TetriminoOperation.MoveDown);
 				} else {
-					this.Logic.FixMino ();
-					this.Logic.CreateMino ();
+					this.FixMino ();
 				}
 			}
 			this.LastUpdated = Time.time;
 		}
 	}
 
+	private void FixMino ()
+	{
+		this.Logic.FixMino ();
+
+		this.Logic.ClearLines ();
+
+		this.Logic.CreateMino ();
+
+	}
 
 }

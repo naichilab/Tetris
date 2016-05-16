@@ -101,4 +101,11 @@ public class TetrisLogic : MonoBehaviour
 		this.CurrentMino = null;
 	}
 
+	public void ClearLines ()
+	{
+
+		this.Field.ClearLines ();
+		
+	}
+
 }

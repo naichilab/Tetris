@@ -24,10 +24,13 @@ public class Field:MonoBehaviour
 	/// </summary>
 	const int FIELD_HEIGHT = 20;
 
-	/// <summary>
-	/// フィールド
-	/// </summary>
-	Cell[,] field = null;
+	//	/// <summary>
+	//	/// フィールド
+	//	/// </summary>
+	//	Cell[,] field = null;
+
+	public List<Row> Rows { get; private set; }
+
 
 
 	/// <summary>
@@ -35,14 +38,14 @@ public class Field:MonoBehaviour
 	/// </summary>
 	public void Reset ()
 	{
-		//左右の壁、床、天井を含めたサイズで初期化
-		this.field = new Cell[FIELD_WIDTH + 2, FIELD_HEIGHT + 4];
+		this.Rows = new List<Row> ();
 
-		for (int col = 0; col < FIELD_WIDTH + 2; col++) {
-			for (int row = 0; row < FIELD_HEIGHT + 4; row++) {
-				bool leftWall = col == 0;
-				bool rightWall = col == FIELD_WIDTH + 1;
-				bool floor = row == 0;
+		for (int r = 0; r < FIELD_HEIGHT + 2; r++) {
+			var row = new Row ();
+			for (int c = 0; c < FIELD_WIDTH + 2; c++) {
+				bool leftWall = c == 0;
+				bool rightWall = c == FIELD_WIDTH + 1;
+				bool floor = r == 0;
 
 				Cell cell = null;
 				if (leftWall || rightWall || floor) {
@@ -50,9 +53,12 @@ public class Field:MonoBehaviour
 				} else {
 					cell = new Cell (Cell.Contents.Empty);
 				}
-				this.field [col, row] = cell;
+
+				row.Cells.Add (cell);
 			}
+			this.Rows.Add (row);
 		}
+
 	}
 
 	/// <summary>
@@ -61,7 +67,7 @@ public class Field:MonoBehaviour
 	/// <param name="absolutePoints">Absolute points.</param>
 	public bool Placeable (IEnumerable<Point> absolutePoints)
 	{
-		return absolutePoints.All (p => this.field [p.X, p.Y].IsEmpty);
+		return absolutePoints.All (p => this.Rows [p.Y].Cells [p.X].IsEmpty);
 	}
 
 
@@ -72,8 +78,15 @@ public class Field:MonoBehaviour
 	{
 		mino.GetAbsolutePoints ()
 			.ToList ()
-			.ForEach (p => this.field [p.X, p.Y].SetCube ());
+			.ForEach (p => this.Rows [p.Y].Cells [p.X].SetCube ());
 	}
+
+	public void ClearLines ()
+	{
+		
+		
+	}
+
 
 	#if UNITY_EDITOR
 	[CustomEditor (typeof(Field))]
@@ -84,7 +97,7 @@ public class Field:MonoBehaviour
 			base.OnInspectorGUI ();
 			Field field = target as Field;
 
-			if (field.field == null) {
+			if (field.Rows == null) {
 				return;
 			}
 
@@ -95,7 +108,7 @@ public class Field:MonoBehaviour
 				for (int col = 0; col < FIELD_WIDTH + 2; col++) {
 					EditorGUILayout.BeginVertical ();
 
-					EditorGUILayout.Toggle (!field.field [col, row].IsEmpty);
+					EditorGUILayout.Toggle (!field.Rows [row].Cells [col].IsEmpty);
 //					EditorGUILayout.LabelField (((int)field.field [col, row].Contents).ToString ());
 
 					EditorGUILayout.EndVertical ();
@@ -106,6 +119,7 @@ public class Field:MonoBehaviour
 		}
 	}
 	#endif
+
 
 
 }
