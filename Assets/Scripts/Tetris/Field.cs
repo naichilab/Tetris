@@ -24,6 +24,14 @@ public class Field:MonoBehaviour
 	/// </summary>
 	const int FIELD_HEIGHT = 20;
 
+	const int WALL_THICKNESS = 1;
+
+	const int CEIL_THICKNESS = 3;
+
+	const int TOTAL_WIDTH = WALL_THICKNESS + FIELD_WIDTH + WALL_THICKNESS;
+	const int TOTAL_HEIGHT = WALL_THICKNESS + FIELD_HEIGHT + CEIL_THICKNESS;
+
+
 	//	/// <summary>
 	//	/// フィールド
 	//	/// </summary>
@@ -31,6 +39,12 @@ public class Field:MonoBehaviour
 
 	public List<Row> Rows { get; private set; }
 
+
+	public Row this [int rowIdx] {
+		get {
+			return this.Rows [rowIdx];
+		}
+	}
 
 
 	/// <summary>
@@ -40,9 +54,9 @@ public class Field:MonoBehaviour
 	{
 		this.Rows = new List<Row> ();
 
-		for (int r = 0; r < FIELD_HEIGHT + 2; r++) {
+		for (int r = 0; r < TOTAL_HEIGHT; r++) {
 			var row = new Row ();
-			for (int c = 0; c < FIELD_WIDTH + 2; c++) {
+			for (int c = 0; c < TOTAL_WIDTH; c++) {
 				bool leftWall = c == 0;
 				bool rightWall = c == FIELD_WIDTH + 1;
 				bool floor = r == 0;
@@ -67,7 +81,7 @@ public class Field:MonoBehaviour
 	/// <param name="absolutePoints">Absolute points.</param>
 	public bool Placeable (IEnumerable<Point> absolutePoints)
 	{
-		return absolutePoints.All (p => this.Rows [p.Y].Cells [p.X].IsEmpty);
+		return absolutePoints.All (p => this [p.Y] [p.X].IsEmpty);
 	}
 
 
@@ -76,16 +90,45 @@ public class Field:MonoBehaviour
 	/// </summary>
 	public void FixTetrimino (Tetrimino mino)
 	{
-		mino.GetAbsolutePoints ()
-			.ToList ()
-			.ForEach (p => this.Rows [p.Y].Cells [p.X].SetCube ());
+		foreach (var c in mino.GetCubes()) {
+			var abs = mino.AbsoluteCenterPoint + c.DistanceFromTetriminoCenter;
+			this [abs.Y] [abs.X].Cube = c;
+		}
 	}
 
 	public void ClearLines ()
 	{
-		
-		
+		while (true) {
+			Row filledRow = this.Rows.Where (r => r.IsFilled).FirstOrDefault ();
+			if (filledRow == null) {
+				break;
+			}
+
+			filledRow.Cells
+				.Where (c => c.Cube != null)
+				.ToList ()
+				.ForEach (c => c.Cube.DestroyGameObject ());
+
+			filledRow.Clear ();
+
+			//空いた行を詰める
+			int row = this.Rows.IndexOf (filledRow);
+			for (int r = row + 1; r < this.Rows.Count; r++) {
+				Row lowerRow = this [r - 1];
+				Row upperRow = this [r];
+				//上から下へ移動
+				for (int colIdx = 0; colIdx < upperRow.Cells.Count; colIdx++) {
+					if (upperRow [colIdx].HasCube) {
+						var cube = upperRow [colIdx].Cube;
+						cube.Move (new Point (0, -1));	//座標を移動
+						lowerRow [colIdx].Cube = cube;	//下の行に移す
+						upperRow [colIdx].Clear ();		//上の行の参照を消す
+					}
+				}
+			}
+		}
 	}
+
 
 
 	#if UNITY_EDITOR
@@ -108,7 +151,7 @@ public class Field:MonoBehaviour
 				for (int col = 0; col < FIELD_WIDTH + 2; col++) {
 					EditorGUILayout.BeginVertical ();
 
-					EditorGUILayout.Toggle (!field.Rows [row].Cells [col].IsEmpty);
+					EditorGUILayout.Toggle (!field [row] [col].IsEmpty);
 //					EditorGUILayout.LabelField (((int)field.field [col, row].Contents).ToString ());
 
 					EditorGUILayout.EndVertical ();

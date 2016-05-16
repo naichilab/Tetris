@@ -18,10 +18,6 @@ public class Cell
 		/// </summary>
 		Empty,
 		/// <summary>
-		/// ブロックあり
-		/// </summary>
-		Cube,
-		/// <summary>
 		/// 壁
 		/// </summary>
 		Wall
@@ -33,6 +29,12 @@ public class Cell
 	public Contents Content{ get; private set; }
 
 	/// <summary>
+	/// このセルにあるブロック
+	/// </summary>
+	/// <value>The cube.</value>
+	public TetriminoCube Cube{ get; set; }
+
+	/// <summary>
 	/// コンストラクタ
 	/// </summary>
 	/// <param name="c">内容物</param>
@@ -41,16 +43,12 @@ public class Cell
 		this.Content = c;
 	}
 
-	/// <summary>
-	/// Cubeをセット
-	/// </summary>
-	public void SetCube ()
+
+	public void Clear ()
 	{
-		if (this.IsWall) {
-			throw new UnityException ("Cannot set the cube to the WALL");
+		if (!this.IsWall) {
+			this.Cube = null;
 		}
-		
-		this.Content = Contents.Cube;
 	}
 
 	/// <summary>
@@ -58,9 +56,17 @@ public class Cell
 	/// </summary>
 	public bool IsWall{ get { return this.Content == Contents.Wall; } }
 
+	/// <summary>
+	/// Cube設置可能か
+	/// </summary>
+	/// <value><c>true</c> if this instance is empty; otherwise, <c>false</c>.</value>
+	public bool IsEmpty{ get { return !this.IsWall && this.Cube == null; } }
 
 	/// <summary>
-	/// 空かどうか
+	/// Cubeが設置されているか
 	/// </summary>
-	public bool IsEmpty{ get { return this.Content == Contents.Empty; } }
+	/// <value><c>true</c> if this instance has cube; otherwise, <c>false</c>.</value>
+	public bool HasCube{ get { return this.Cube != null; } }
+
+
 }

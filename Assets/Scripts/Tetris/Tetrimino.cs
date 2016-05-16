@@ -41,7 +41,7 @@ public class Tetrimino : MonoBehaviour
 
 	private List<TetriminoCube> Cubes = new List<TetriminoCube> ();
 
-	private Point AbsoluteCenterPoint = Point.Zero;
+	public Point AbsoluteCenterPoint = Point.Zero;
 
 
 	public static Shapes GetRandomShape ()
@@ -120,6 +120,10 @@ public class Tetrimino : MonoBehaviour
 		this.Cubes.ForEach (c => c.transform.position = (p + c.DistanceFromTetriminoCenter).ToVector2);
 	}
 
+	public IEnumerable<TetriminoCube> GetCubes ()
+	{
+		return this.Cubes.AsEnumerable ();
+	}
 
 	/// <summary>
 	/// テトリミノを構成するCubeそれぞれの絶対座標

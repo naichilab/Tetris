@@ -26,6 +26,23 @@ public class TetriminoCube : MonoBehaviour
 		this.transform.localPosition = this.DistanceFromTetriminoCenter.ToVector2;
 	}
 
+	/// <summary>
+	/// 移動する
+	/// </summary>
+	/// <param name="moveAmount">移動量</param>
+	public void Move (Point offset)
+	{
+		this.DistanceFromTetriminoCenter.Move (offset);
+		this.transform.localPosition = this.DistanceFromTetriminoCenter.ToVector2;
+	}
+
+
+	public void DestroyGameObject ()
+	{
+		Destroy (this.gameObject);
+	}
+
+
 	#if UNITY_EDITOR
 	[CustomEditor (typeof(TetriminoCube))]
 	public class TetriminoCubeEditor : Editor
