@@ -21,7 +21,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 	[SerializeField]
 	private InputBase UserInput;
 
-
 	/// <summary>
 	/// ミノが最後に動いた時間
 	/// </summary>
@@ -77,23 +76,23 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 				this.Logic.Move (TetriminoOperation.RotateCounterClockwise);
 			}
 		};
+
+		//GameStart
+		this.Logic.CreateMino ();
 	}
 
 	public void Update ()
 	{
-
-		//自動落下
-		if (this.LastUpdated + this.Interval < Time.time) {
-			if (!this.Logic.HasCurrentMino) {
-				this.Logic.CreateMino ();
-			} else {
+		if (!this.Logic.IsGameOver) {
+			//自動落下
+			if (this.LastUpdated + this.Interval < Time.time) {
 				if (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
 					this.Logic.Move (TetriminoOperation.MoveDown);
 				} else {
 					this.FixMino ();
 				}
+				this.LastUpdated = Time.time;
 			}
-			this.LastUpdated = Time.time;
 		}
 	}
 

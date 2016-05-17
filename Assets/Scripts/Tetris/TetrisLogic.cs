@@ -94,7 +94,7 @@ public class TetrisLogic : MonoBehaviour
 	public void FixMino ()
 	{
 		if (this.CurrentMino == null) {
-			Debug.LogError ("Missing current tetrimino.");
+			return;
 		}
 
 		this.Field.FixTetrimino (this.CurrentMino);
