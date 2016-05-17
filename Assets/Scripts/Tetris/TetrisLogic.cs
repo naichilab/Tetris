@@ -11,6 +11,8 @@ public class TetrisLogic : MonoBehaviour
 
 	private Field Field;
 
+	private ScoreManager ScoreManager;
+
 	public void SetTetriminoGenerator (TetriminoGenerator gen)
 	{
 		this.Generator = gen;
@@ -22,16 +24,14 @@ public class TetrisLogic : MonoBehaviour
 		f.Reset ();
 	}
 
+	public void SetScoreManager (ScoreManager sm)
+	{
+		this.ScoreManager = sm;
+	}
+
 	public bool HasCurrentMino {
 		get{ return this.CurrentMino != null; }
 	}
-
-
-	void ClearField ()
-	{
-
-	}
-
 
 
 	public bool CanMove (TetriminoOperation op)
@@ -57,7 +57,7 @@ public class TetrisLogic : MonoBehaviour
 	}
 
 
-	public void Move (TetriminoOperation op)
+	public void Move (TetriminoOperation op, int score = 0)
 	{
 		if (this.CurrentMino == null) {
 			return;
@@ -80,6 +80,14 @@ public class TetrisLogic : MonoBehaviour
 			this.CurrentMino.Rotate (RotateDirection.CounterClockwise);
 			break;
 		}
+		this.ScoreManager.AddHardDropScore (score);
+	}
+
+	public void NewGame ()
+	{
+		this.ScoreManager.Reset ();
+		//GameStart
+		this.CreateMino ();
 	}
 
 	public void CreateMino ()
@@ -103,9 +111,8 @@ public class TetrisLogic : MonoBehaviour
 
 	public void ClearLines ()
 	{
-
-		this.Field.ClearLines ();
-		
+		int deletedRowCount = this.Field.ClearLines ();
+		this.ScoreManager.AddClearLinesScore (deletedRowCount);
 	}
 
 	public bool IsGameOver 

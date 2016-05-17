@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
+
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
 	public bool IsDebugMode;
@@ -21,10 +22,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 	[SerializeField]
 	private InputBase UserInput;
 
+	[SerializeField]
+	private ScoreManager ScoreManager;
+
 	/// <summary>
 	/// ミノが最後に動いた時間
 	/// </summary>
 	private float LastUpdated;
+
 
 
 	public void Awake ()
@@ -41,6 +46,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 	{
 		this.Logic.SetTetriminoGenerator (this.Generator);
 		this.Logic.SetField (this.Field);
+		this.Logic.SetScoreManager (this.ScoreManager);
 
 		this.UserInput.LeftKeyPressed += (sender, e) => {
 			if (this.Logic.CanMove (TetriminoOperation.MoveLeft)) {
@@ -62,7 +68,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 		};
 		this.UserInput.HardDropKeyPressed += (sender, e) => {
 			while (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
-				this.Logic.Move (TetriminoOperation.MoveDown);
+				this.Logic.Move (TetriminoOperation.MoveDown, 1);
 			}
 			this.FixMino ();
 		};
@@ -77,8 +83,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 			}
 		};
 
-		//GameStart
-		this.Logic.CreateMino ();
+		this.Logic.NewGame ();
 	}
 
 	public void Update ()

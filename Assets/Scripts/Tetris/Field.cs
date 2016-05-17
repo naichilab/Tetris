@@ -115,8 +115,10 @@ public class Field:MonoBehaviour
 	/// <summary>
 	/// 揃った行を消す
 	/// </summary>
-	public void ClearLines ()
+	/// <returns>消した行数</returns>
+	public int ClearLines ()
 	{
+		int deletedRowCount = 0;
 		while (true) {
 			Row filledRow = this.Rows.Where (r => r.IsFilled).FirstOrDefault ();
 			if (filledRow == null) {
@@ -145,7 +147,11 @@ public class Field:MonoBehaviour
 					}
 				}
 			}
+
+			deletedRowCount++;
 		}
+
+		return deletedRowCount;
 	}
 
 
