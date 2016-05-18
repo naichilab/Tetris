@@ -63,9 +63,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 	{
 		string msg = string.Format ("京ゆにテトリス(難しめ) {0}ライン消して{1}点でした。", this.Logic.ScoreManager.Lines, this.Logic.ScoreManager.Score);
 
-		UnityRoomTweet.Tweet (msg, "kyoto-unity-tetris");
-		
-		
+		UnityRoomTweet.Tweet (msg, "com-naichilab-tetris", "kyounitetris");
 	}
 
 }
