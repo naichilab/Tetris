@@ -28,15 +28,14 @@ public class ScoreManager : MonoBehaviour
 	[SerializeField]
 	private Text LinesLabel;
 
-	private int highScore;
 	private int score;
 	private int lines;
 
 
 	public int HighScore {
-		get{ return this.highScore; }
+		get{ return SaveData.HighScore; }
 		private set {
-			this.highScore = value;
+			SaveData.HighScore = value;
 			this.HighScoreLabel.text = value.ToString ();
 		}
 	}
@@ -95,16 +94,4 @@ public class ScoreManager : MonoBehaviour
 	}
 
 
-
-	// Use this for initialization
-	void Start ()
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
 }
