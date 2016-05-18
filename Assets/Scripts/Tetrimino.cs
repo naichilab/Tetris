@@ -95,6 +95,13 @@ public class Tetrimino : MonoBehaviour
 		}
 	}
 
+	private void Update ()
+	{
+		if (this.transform.childCount == 0) {
+			Destroy (this.gameObject);
+		}
+	}
+
 	/// <summary>
 	/// 立方体を１つ生成する
 	/// </summary>

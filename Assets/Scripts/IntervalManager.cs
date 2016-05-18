@@ -7,13 +7,20 @@ using System.Collections;
 /// </summary>
 public class IntervalManager : MonoBehaviour
 {
+	/// <summary>
+	/// レベル
+	/// １万点で１あがる感じ
+	/// 20ぐらいになると無理ゲーになるようにしよう
+	/// </summary>
+	public int Rank = 0;
+
 	/*
 	 * 経過時間でだんだん難しくなるようにする
 	 * 参考：https://twitter.com/abagames/status/471998089402646528
      * [難度] = sqrt([経過フレーム数] * 0.0001) + 1
 	*/
-
 	private int frameCount = 0;
+
 
 	/// <summary>
 	/// 難度
@@ -22,7 +29,7 @@ public class IntervalManager : MonoBehaviour
 	/// <value>The difficulty.</value>
 	private float difficulty {
 		get {
-			return Mathf.Sqrt (this.frameCount * 0.0002f) + 1f;
+			return Mathf.Sqrt (this.frameCount * 0.0001f) + 1f + this.Rank;
 		}
 	}
 

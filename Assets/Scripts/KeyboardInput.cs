@@ -8,7 +8,6 @@ public class KeyboardInput : InputBase
 
 	public void Update ()
 	{
-		
 		bool left = Input.GetKeyDown (KeyCode.LeftArrow);
 		bool right = Input.GetKeyDown (KeyCode.RightArrow);
 		bool down = Input.GetKeyDown (KeyCode.DownArrow);

@@ -37,7 +37,7 @@ public class Row
 
 	public void Clear ()
 	{
-		this.Cells.ForEach (c => c.Clear ());
+		this.Cells.ForEach (c => c.Clear (true));
 	}
 
 }

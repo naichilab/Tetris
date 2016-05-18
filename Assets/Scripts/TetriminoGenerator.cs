@@ -68,17 +68,4 @@ public class TetriminoGenerator : MonoBehaviour
 
 		return tetrimino;
 	}
-
-
-	// Use this for initialization
-	void Start ()
-	{
-	
-	}
-	
-	// Update is called once per frame
-	void Update ()
-	{
-	
-	}
 }

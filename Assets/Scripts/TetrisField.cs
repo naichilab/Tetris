@@ -62,6 +62,11 @@ public class TetrisField:MonoBehaviour
 	/// </summary>
 	public void Reset ()
 	{
+		if (this.Rows != null) {
+			this.Rows.ForEach (r => r.Clear ());
+		}
+
+
 		this.Rows = new List<Row> ();
 
 		for (int r = 0; r < TOTAL_HEIGHT; r++) {
@@ -70,13 +75,10 @@ public class TetrisField:MonoBehaviour
 				bool leftWall = c == 0;
 				bool rightWall = c == FIELD_WIDTH + 1;
 				bool floor = r == 0;
-				bool ceil = r >= CEIL_HEIGHT;
 
 				Cell cell = null;
 				if (leftWall || rightWall || floor) {
 					cell = new Cell (Cell.Contents.Wall);
-				} else if (ceil) {
-					cell = new Cell (Cell.Contents.Ceil);
 				} else {
 					cell = new Cell (Cell.Contents.Empty);
 				}
@@ -125,11 +127,6 @@ public class TetrisField:MonoBehaviour
 				break;
 			}
 
-			filledRow.Cells
-				.Where (c => c.Cube != null)
-				.ToList ()
-				.ForEach (c => c.Cube.DestroyGameObject ());
-
 			filledRow.Clear ();
 
 			//空いた行を詰める
@@ -143,27 +140,17 @@ public class TetrisField:MonoBehaviour
 						var cube = upperRow [colIdx].Cube;
 						cube.Move (new Point (0, -1));	//座標を移動
 						lowerRow [colIdx].Cube = cube;	//下の行に移す
-						upperRow [colIdx].Clear ();		//上の行の参照を消す
+						upperRow [colIdx].Clear (false);		//上の行の参照を消す
 					}
 				}
 			}
 
 			deletedRowCount++;
 		}
-
 		return deletedRowCount;
 	}
 
 
-	/// <summary>
-	/// 天井まで届いたテトリミノがあるか
-	/// </summary>
-	/// <value>The ceil reached.</value>
-	public bool CeilReached {
-		get {
-			return this.Rows.Any (r => r.Cells.Any (c => c.IsCeil && c.HasCube));
-		}
-	}
 
 
 	#if UNITY_EDITOR

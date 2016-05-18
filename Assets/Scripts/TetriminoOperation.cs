@@ -8,6 +8,10 @@ using System.Collections;
 public enum TetriminoOperation
 {
 	/// <summary>
+	/// 移動なし
+	/// </summary>
+	None,
+	/// <summary>
 	/// 右移動
 	/// </summary>
 	MoveRight,
