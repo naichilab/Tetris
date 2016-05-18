@@ -5,10 +5,6 @@ using UnityEngine.EventSystems;
 
 public class KeyboardInput : InputBase
 {
-	[SerializeField]
-	private	KeyCode leftKey = KeyCode.LeftArrow;
-
-
 
 	public void Update ()
 	{
