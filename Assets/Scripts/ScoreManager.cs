@@ -20,20 +20,37 @@ public class ScoreManager : MonoBehaviour
 	const int HARD_DROP_SCORE = 50;
 
 	[SerializeField]
+	private Text HighScoreLabel;
+
+	[SerializeField]
 	private Text ScoreLabel;
 
 	[SerializeField]
 	private Text LinesLabel;
 
+	private int highScore;
 	private int score;
 	private int lines;
 
+
+	public int HighScore {
+		get{ return this.highScore; }
+		private set {
+			this.highScore = value;
+			this.HighScoreLabel.text = value.ToString ();
+		}
+	}
 
 	public int Score {
 		get{ return this.score; }
 		private set {
 			this.score = value;
 			this.ScoreLabel.text = value.ToString ();
+
+			if (value > this.HighScore) {
+				this.HighScore = value;
+			}
+
 		}
 	}
 
@@ -43,6 +60,11 @@ public class ScoreManager : MonoBehaviour
 			this.lines = value;
 			this.LinesLabel.text = value.ToString ();
 		}
+	}
+
+	private void Awake ()
+	{
+		this.HighScore = SaveData.HighScore;
 	}
 
 	public void Reset ()
