@@ -45,6 +45,11 @@ public class TetrisLogic : MonoBehaviour
 	/// </summary>
 	private float NextAutoDropTime;
 
+	/// <summary>
+	/// 操作の入力を行うクラス
+	/// </summary>
+	[SerializeField]
+	private InputBase InputManager;
 
 	private void Start ()
 	{
@@ -53,6 +58,22 @@ public class TetrisLogic : MonoBehaviour
 		this.TetriminoGenerator = this.gameObject.GetComponent<TetriminoGenerator> ();
 		this.TetrisField = this.gameObject.GetComponent<TetrisField> ();
 		this.ScoreManager = this.gameObject.GetComponent<ScoreManager> ();
+
+		//キー入力イベントハンドラ
+		this.InputManager.KeyPressed += (sender, e) => {
+
+//			if (e.Operation == TetriminoOperation.HardDrop) {
+//				while (this.CanMove (TetriminoOperation.MoveDown)) {
+//					this.Move (TetriminoOperation.MoveDown, 1);
+//				}
+//				this.FixMino ();
+//			} else {
+			if (this.CanMove (e.Operation)) {
+				this.Move (e.Operation);
+			}
+//			}
+
+		};
 
 		this.NewGame ();
 	}
@@ -85,12 +106,6 @@ public class TetrisLogic : MonoBehaviour
 	}
 
 
-
-	public bool HasCurrentMino {
-		get{ return this.CurrentMino != null; }
-	}
-
-
 	public bool CanMove (TetriminoOperation op)
 	{
 		if (this.CurrentMino == null) {
@@ -108,6 +123,12 @@ public class TetrisLogic : MonoBehaviour
 			return this.TetrisField.Placeable (this.CurrentMino.GetRotatedAbsolutePoints (RotateDirection.Clockwise));
 		case TetriminoOperation.RotateCounterClockwise:
 			return this.TetrisField.Placeable (this.CurrentMino.GetRotatedAbsolutePoints (RotateDirection.CounterClockwise));
+		case TetriminoOperation.HardDrop:
+			int step = 0;
+			while (this.TetrisField.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (0, -(step + 1))))) {
+				step++;
+			}
+			return step > 0;
 		}
 
 		return false;
@@ -136,8 +157,19 @@ public class TetrisLogic : MonoBehaviour
 		case TetriminoOperation.RotateCounterClockwise:
 			this.CurrentMino.Rotate (RotateDirection.CounterClockwise);
 			break;
+		case TetriminoOperation.HardDrop:
+			while (true) {
+				if (this.TetrisField.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (0, -1)))) {
+					this.CurrentMino.Move (new Point (0, -1));
+					this.ScoreManager.AddHardDropScore (1);
+				} else {
+					this.FixMino ();
+					break;
+				}
+			}
+			break;
 		}
-		this.ScoreManager.AddHardDropScore (score);
+
 	}
 
 

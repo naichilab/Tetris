@@ -5,8 +5,14 @@ using UnityEngine.EventSystems;
 
 public class KeyboardInput : InputBase
 {
+	[SerializeField]
+	private	KeyCode leftKey = KeyCode.LeftArrow;
+
+
+
 	public void Update ()
 	{
+		
 		bool left = Input.GetKeyDown (KeyCode.LeftArrow);
 		bool right = Input.GetKeyDown (KeyCode.RightArrow);
 		bool down = Input.GetKeyDown (KeyCode.DownArrow);
@@ -18,26 +24,26 @@ public class KeyboardInput : InputBase
 			//無視
 		} else {
 			if (left) {
-				this.OnLeftKeyPressed ();
+				this.OnKeyPressed (TetriminoOperation.MoveLeft);
 			}
 			if (right) {
-				this.OnRightKeyPressed ();
+				this.OnKeyPressed (TetriminoOperation.MoveRight);
 			}
 		}
 		if (down) {
-			this.OnBottomKeyPressed ();
+			this.OnKeyPressed (TetriminoOperation.MoveDown);
 		} else if (up) {
-			this.OnHardDropKeyPressed ();
+			this.OnKeyPressed (TetriminoOperation.HardDrop);
 		}
 
 		if (z && x) {
 			//無視
 		} else {
 			if (z) {
-				this.OnRotateCounterClockwiseKeyPressed ();
+				this.OnKeyPressed (TetriminoOperation.RotateClockwise);
 			}
 			if (x) {
-				this.OnRotateClockwiseKeyPressed ();
+				this.OnKeyPressed (TetriminoOperation.RotateCounterClockwise);
 			}
 		}
 	}

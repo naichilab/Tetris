@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 /// <summary>
@@ -30,5 +31,16 @@ public enum TetriminoOperation
 	/// 反時計回りに回転
 	/// </summary>
 	RotateCounterClockwise
-
 }
+
+public class TetriminoOperationEventArgs:EventArgs
+{
+	public TetriminoOperation Operation{ get; set; }
+
+	public TetriminoOperationEventArgs (TetriminoOperation op)
+	{
+		this.Operation = op;
+	}
+}
+
+public delegate void TetriminoOperationEventHandler (object sender, TetriminoOperationEventArgs e);
