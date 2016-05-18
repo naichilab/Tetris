@@ -1,35 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
 	public bool IsDebugMode;
-
-
-	[SerializeField]
-	private TetriminoGenerator Generator;
-
-	[SerializeField]
-	private Field Field;
 
 	[SerializeField]
 	private TetrisLogic Logic;
 
 	[SerializeField]
-	private float Interval = 1.0f;
-
-	[SerializeField]
 	private InputBase UserInput;
-
-	[SerializeField]
-	private ScoreManager ScoreManager;
-
-	/// <summary>
-	/// ミノが最後に動いた時間
-	/// </summary>
-	private float LastUpdated;
-
 
 
 	public void Awake ()
@@ -44,10 +24,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
 	public void Start ()
 	{
-		this.Logic.SetTetriminoGenerator (this.Generator);
-		this.Logic.SetField (this.Field);
-		this.Logic.SetScoreManager (this.ScoreManager);
-
 		this.UserInput.LeftKeyPressed += (sender, e) => {
 			if (this.Logic.CanMove (TetriminoOperation.MoveLeft)) {
 				this.Logic.Move (TetriminoOperation.MoveLeft);
@@ -63,14 +39,14 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 			if (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
 				this.Logic.Move (TetriminoOperation.MoveDown);
 			} else {
-				this.FixMino ();
+				this.Logic.FixMino ();
 			}
 		};
 		this.UserInput.HardDropKeyPressed += (sender, e) => {
 			while (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
 				this.Logic.Move (TetriminoOperation.MoveDown, 1);
 			}
-			this.FixMino ();
+			this.Logic.FixMino ();
 		};
 		this.UserInput.RotateClockwiseKeyPressed += (sender, e) => {
 			if (this.Logic.CanMove (TetriminoOperation.RotateClockwise)) {
@@ -82,36 +58,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 				this.Logic.Move (TetriminoOperation.RotateCounterClockwise);
 			}
 		};
-
-		this.Logic.NewGame ();
 	}
 
-	public void Update ()
-	{
-		if (!this.Logic.IsGameOver) {
-			//自動落下
-			if (this.LastUpdated + this.Interval < Time.time) {
-				if (this.Logic.CanMove (TetriminoOperation.MoveDown)) {
-					this.Logic.Move (TetriminoOperation.MoveDown);
-				} else {
-					this.FixMino ();
-				}
-				this.LastUpdated = Time.time;
-			}
-		}
-	}
 
-	private void FixMino ()
-	{
-		this.Logic.FixMino ();
-
-		this.Logic.ClearLines ();
-
-		if (this.Logic.IsGameOver) {
-			Debug.Log ("Game Over!!!!!");
-		} else {
-			this.Logic.CreateMino ();
-		}
-	}
 
 }

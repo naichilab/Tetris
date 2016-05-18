@@ -12,7 +12,7 @@ using UnityEditor;
 /// <summary>
 /// テトリスフィールド
 /// </summary>
-public class Field:MonoBehaviour
+public class TetrisField:MonoBehaviour
 {
 
 	/// <summary>
@@ -167,15 +167,15 @@ public class Field:MonoBehaviour
 
 
 	#if UNITY_EDITOR
-	[CustomEditor (typeof(Field))]
+	[CustomEditor (typeof(TetrisField))]
 	public class FieldEditor : Editor
 	{
 		public override void OnInspectorGUI ()
 		{
 			base.OnInspectorGUI ();
-			Field field = target as Field;
+			TetrisField tetrisField = target as TetrisField;
 
-			if (field.Rows == null) {
+			if (tetrisField.Rows == null) {
 				return;
 			}
 
@@ -186,7 +186,7 @@ public class Field:MonoBehaviour
 				for (int col = 0; col < FIELD_WIDTH + 2; col++) {
 					EditorGUILayout.BeginVertical ();
 
-					EditorGUILayout.Toggle (!field [row] [col].IsEmpty);
+					EditorGUILayout.Toggle (!tetrisField [row] [col].IsEmpty);
 //					EditorGUILayout.LabelField (((int)field.field [col, row].Contents).ToString ());
 
 					EditorGUILayout.EndVertical ();

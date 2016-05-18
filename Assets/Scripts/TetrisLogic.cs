@@ -1,33 +1,90 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+/// <summary>
+/// テトリスロジック
+/// </summary>
+[RequireComponent (typeof(IntervalManager))]
+[RequireComponent (typeof(TetriminoGenerator))]
+[RequireComponent (typeof(TetrisField))]
+[RequireComponent (typeof(ScoreManager))]
 public class TetrisLogic : MonoBehaviour
 {
 
-
+	/// <summary>
+	/// 現在操作中のテトリミノ
+	/// </summary>
 	public Tetrimino CurrentMino = null;
 
-	private TetriminoGenerator Generator;
+	/// <summary>
+	/// 自動落下速度を扱うクラス
+	/// </summary>
+	/// <value>The interval manager.</value>
+	private IntervalManager IntervalManager { get; set; }
 
-	private Field Field;
 
+	/// <summary>
+	/// テトリミノ生成器
+	/// </summary>
+	private TetriminoGenerator TetriminoGenerator;
+
+	/// <summary>
+	/// テトリスフィールド
+	/// </summary>
+	private TetrisField TetrisField;
+
+
+	/// <summary>
+	/// スコア管理クラス
+	/// </summary>
 	private ScoreManager ScoreManager;
 
-	public void SetTetriminoGenerator (TetriminoGenerator gen)
+	/// <summary>
+	/// テトリミノが自動落下する時間
+	/// </summary>
+	private float NextAutoDropTime;
+
+
+	private void Start ()
 	{
-		this.Generator = gen;
+		//各種コンポーネントを取得
+		this.IntervalManager = this.gameObject.GetComponent<IntervalManager> ();
+		this.TetriminoGenerator = this.gameObject.GetComponent<TetriminoGenerator> ();
+		this.TetrisField = this.gameObject.GetComponent<TetrisField> ();
+		this.ScoreManager = this.gameObject.GetComponent<ScoreManager> ();
+
+		this.NewGame ();
 	}
 
-	public void SetField (Field f)
+	private void Update ()
 	{
-		this.Field = f;
-		f.Reset ();
+		if (!this.IsGameOver && Time.time > this.NextAutoDropTime) {
+			//自動落下
+			if (this.CanMove (TetriminoOperation.MoveDown)) {
+				this.Move (TetriminoOperation.MoveDown);
+			} else {
+				this.FixMino ();
+			}
+			this.UpdateNextAutoDropTime ();
+		}
 	}
 
-	public void SetScoreManager (ScoreManager sm)
+
+	/// <summary>
+	/// 新規ゲーム開始
+	/// </summary>
+	public void NewGame ()
 	{
-		this.ScoreManager = sm;
+		this.ScoreManager.Reset ();
+		this.IntervalManager.Reset ();
+		this.TetrisField.Reset ();
+
+		this.CreateMino ();
+		this.UpdateNextAutoDropTime ();
 	}
+
+
 
 	public bool HasCurrentMino {
 		get{ return this.CurrentMino != null; }
@@ -42,15 +99,15 @@ public class TetrisLogic : MonoBehaviour
 		
 		switch (op) {
 		case TetriminoOperation.MoveLeft:
-			return this.Field.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (-1, 0)));
+			return this.TetrisField.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (-1, 0)));
 		case TetriminoOperation.MoveRight:
-			return this.Field.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (1, 0)));
+			return this.TetrisField.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (1, 0)));
 		case TetriminoOperation.MoveDown:
-			return this.Field.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (0, -1)));
+			return this.TetrisField.Placeable (this.CurrentMino.GetMovedAbsolutePoints (new Point (0, -1)));
 		case TetriminoOperation.RotateClockwise:
-			return this.Field.Placeable (this.CurrentMino.GetRotatedAbsolutePoints (RotateDirection.Clockwise));
+			return this.TetrisField.Placeable (this.CurrentMino.GetRotatedAbsolutePoints (RotateDirection.Clockwise));
 		case TetriminoOperation.RotateCounterClockwise:
-			return this.Field.Placeable (this.CurrentMino.GetRotatedAbsolutePoints (RotateDirection.CounterClockwise));
+			return this.TetrisField.Placeable (this.CurrentMino.GetRotatedAbsolutePoints (RotateDirection.CounterClockwise));
 		}
 
 		return false;
@@ -83,12 +140,6 @@ public class TetrisLogic : MonoBehaviour
 		this.ScoreManager.AddHardDropScore (score);
 	}
 
-	public void NewGame ()
-	{
-		this.ScoreManager.Reset ();
-		//GameStart
-		this.CreateMino ();
-	}
 
 	public void CreateMino ()
 	{
@@ -96,7 +147,7 @@ public class TetrisLogic : MonoBehaviour
 			Debug.LogError ("Current Tetrimino is exists");
 		}
 
-		this.CurrentMino = this.Generator.Generate ();
+		this.CurrentMino = this.TetriminoGenerator.Generate ();
 	}
 
 	public void FixMino ()
@@ -105,17 +156,40 @@ public class TetrisLogic : MonoBehaviour
 			return;
 		}
 
-		this.Field.FixTetrimino (this.CurrentMino);
+		this.TetrisField.FixTetrimino (this.CurrentMino);
 		this.CurrentMino = null;
+
+		this.ClearLines ();
+
+		if (this.IsGameOver) {
+			Debug.Log ("Game Over!!!!!");
+		} else {
+			this.CreateMino ();
+		}
+
 	}
 
 	public void ClearLines ()
 	{
-		int deletedRowCount = this.Field.ClearLines ();
+		int deletedRowCount = this.TetrisField.ClearLines ();
 		this.ScoreManager.AddClearLinesScore (deletedRowCount);
 	}
 
-	public bool IsGameOver 
-	{ get { return this.Field.CeilReached; } }
+	public bool IsGameOver {
+		get { 
+			return this.TetrisField.CeilReached;
+		}
+	}
+
+
+
+
+	/// <summary>
+	/// 自動落下時刻を更新する
+	/// </summary>
+	private void UpdateNextAutoDropTime ()
+	{
+		this.NextAutoDropTime = Time.time + this.IntervalManager.GetInterval ();
+	}
 
 }
